@@ -215,6 +215,14 @@ public class Balance {
 		return generatedEvents;
 	}
 
+	public List<BalanceEvent> handle(DeleteAllEntries deleteAllEntries) {
+		List<BalanceEvent> generatedEvents = new ArrayList<>();
+		for (BalanceEntry entry : this.entries) {
+			generatedEvents.add(new BalanceEntryDeleted(id(), entry.guid()));
+		}
+		return generatedEvents;
+	}
+
 	public Balance handle(BalanceCreated balanceCreatedEvent) {
 		this.assignId(balanceCreatedEvent.balanceId());
 		return this;

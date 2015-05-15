@@ -167,4 +167,19 @@ public class BalanceTest {
 		assertEquals(0, balance.entries().size());
 	}
 
+	@Test
+	public void testDeleteAllEntries() {
+		initializeBalanceWithOneEntry();
+		initializeBalanceWithOneEntry();
+		initializeBalanceWithOneEntry();
+		DeleteAllEntries command = new DeleteAllEntries(1234567L);
+
+		List<BalanceEvent> generatedEvents = balance.handle(command);
+
+		assertEquals(3, generatedEvents.size());
+		checkBalanceEvent(generatedEvents.get(0), BalanceEntryDeleted.class);
+		checkBalanceEvent(generatedEvents.get(1), BalanceEntryDeleted.class);
+		checkBalanceEvent(generatedEvents.get(2), BalanceEntryDeleted.class);
+	}
+
 }
