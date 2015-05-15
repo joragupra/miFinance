@@ -66,11 +66,10 @@ public class BalanceTest {
 
   @Test
   public void testBalanceEntryCreated() {
-      final long balanceId = 6789L;
       final String description = "Book purchase";
       final java.util.Date createdAt = new java.util.Date();
       final Money amount = Money.fromCents(1250);
-      BalanceEntryCreated balanceEntryCreatedEvent = new BalanceEntryCreated(balanceId, description, createdAt, amount);
+      BalanceEntryCreated balanceEntryCreatedEvent = new BalanceEntryCreated(6789L, description, createdAt, amount);
 
       balance.handle(balanceEntryCreatedEvent);
 
@@ -78,6 +77,32 @@ public class BalanceTest {
       assertEquals(description, ((BalanceEntry) balance.entries().get(0)).description());
       assertEquals(createdAt, ((BalanceEntry) balance.entries().get(0)).recordedAt());
       assertEquals(amount, ((BalanceEntry) balance.entries().get(0)).amount());
+  }
+
+  @Test
+  public void testUpdateBalanceEntry() {
+      final String entryGuid = initializeBalanceWithOneEntry();
+      final String description = "Book purchase - modification";
+      final java.util.Date createdAt = new java.util.Date();
+      final Money amount = Money.fromCents(1550);
+      UpdateBalanceEntry command = new UpdateBalanceEntry(9876L, entryGuid, description, createdAt, amount);
+
+      List<BalanceEvent> generatedEvents = balance.handle(command);
+
+      checkBalanceEvent(generatedEvents.get(0), BalanceEntryUpdated.class);
+      assertEquals(entryGuid, ((BalanceEntryUpdated) generatedEvents.get(0)).entryGuid());
+      assertEquals(description, ((BalanceEntryUpdated) generatedEvents.get(0)).entryDescription());
+      assertEquals(createdAt, ((BalanceEntryUpdated) generatedEvents.get(0)).creationDate());
+      assertEquals(amount, ((BalanceEntryUpdated) generatedEvents.get(0)).amount());
+  }
+
+  private String initializeBalanceWithOneEntry() {
+      final String description = "Book purchase";
+      final java.util.Date createdAt = new java.util.Date();
+      final Money amount = Money.fromCents(1250);
+      BalanceEntryCreated balanceEntryCreatedEvent = new BalanceEntryCreated(6789L, description, createdAt, amount);
+      balance.handle(balanceEntryCreatedEvent);
+      return ((BalanceEntry) balance.entries().get(0)).guid();
   }
 
 }

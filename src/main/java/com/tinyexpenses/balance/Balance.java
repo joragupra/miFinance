@@ -152,6 +152,12 @@ public class Balance {
         return generatedEvents;
     }
 
+    public List<BalanceEvent> handle(UpdateBalanceEntry updateEntry) {
+        List<BalanceEvent> generatedEvents = new ArrayList<>();
+        generatedEvents.add(new BalanceEntryUpdated(updateEntry.balanceId(), updateEntry.entryGuid(), updateEntry.entryDescription(), updateEntry.createdAt(), updateEntry.amount()));
+        return generatedEvents;
+    }
+
     public Balance handle(BalanceCreated balanceCreatedEvent) {
         this.assignId(balanceCreatedEvent.balanceId());
         return this;
