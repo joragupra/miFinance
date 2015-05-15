@@ -5,8 +5,6 @@ import java.util.Date;
 
 public class BalanceEntry {
 
-	private Long id;
-
 	private String guid;
 
 	private String description;
@@ -15,26 +13,11 @@ public class BalanceEntry {
 
 	private Money amount;
 
-	BalanceEntry(String description, Date recordedAt, long amountCents) {
-		this(null, description, recordedAt, amountCents);
-	}
-
-	BalanceEntry(Long id, String description, Date recordedAt, long amountCents) {
-		this.id = id;
-		this.description = description;
-		this.recordedAt = recordedAt;
-		this.amount = Money.fromCents(amountCents);
-	}
-
 	BalanceEntry(String guid, String description, Date recordedAt, Money amount) {
 		this.guid = guid;
 		this.description = description;
 		this.recordedAt = recordedAt;
 		this.amount = amount;
-	}
-
-	public Long id() {
-		return id;
 	}
 
 	public String guid() {

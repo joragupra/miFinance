@@ -69,31 +69,13 @@ public class Balance {
 		return this;
 	}
 
-	public BalanceEntry addEntry(String description, Date recordedAt,
-			long amountCents) {
-		BalanceEntry newEntry = new BalanceEntry(description, recordedAt,
-				amountCents);
+	public BalanceEntry addEntry(String guid, String description, Date recordedAt, Money amount) {
+		BalanceEntry newEntry = new BalanceEntry(guid, description, recordedAt, amount);
 		this.entries.add(newEntry);
 
 		this.entries = sortEntries(this.sortMethod);
 
 		return newEntry;
-	}
-
-	// TODO - deprecated: remove
-	public BalanceEntry updateEntry(long entryId, String description,
-			Date recordedAt, long amountCents) {
-		int pos = findEntryPositionForId(entryId);
-
-		if (pos == -1) {
-			return null;
-		}
-
-		BalanceEntry balanceEntry = this.entries.get(pos);
-		balanceEntry.changeDescription(description);
-		balanceEntry.changeRecordedAt(recordedAt);
-		balanceEntry.changeAmount(amountCents);
-		return balanceEntry;
 	}
 
 	public BalanceEntry updateEntry(String entryGuid, String description,
@@ -111,18 +93,6 @@ public class Balance {
 		return balanceEntry;
 	}
 
-	// TODO - deprecated: remove
-	public boolean deleteEntry(long entryId) {
-		int pos = findEntryPositionForId(entryId);
-
-		if (pos == -1) {
-			return false;
-		}
-
-		this.entries.remove(pos);
-		return true;
-	}
-
 	public boolean deleteEntry(String entryGuid) {
 		int pos = findEntryPositionForGuid(entryGuid);
 
@@ -138,20 +108,10 @@ public class Balance {
 		return this.entries.removeAll(this.entries());
 	}
 
-	private int findEntryPositionForId(long entryId) {
-		int pos = -1;
-		for (int i = 0; i < this.entries.size(); i++) {
-			if (this.entries.get(i).id() == entryId) {
-				pos = i;
-				break;
-			}
-		}
-		return pos;
-	}
-
 	private int findEntryPositionForGuid(String entryGuid) {
 		int pos = -1;
 		for (int i = 0; i < this.entries.size(); i++) {
+			System.out.println("Looking for " + entryGuid + ". Now we have " + this.entries.get(i).guid());
 			if (this.entries.get(i).guid() == entryGuid) {
 				pos = i;
 				break;
@@ -194,7 +154,7 @@ public class Balance {
 
 	public List<BalanceEvent> handle(CreateEntry createEntry) {
 		List<BalanceEvent> generatedEvents = new ArrayList<>();
-		generatedEvents.add(new BalanceEntryCreated(createEntry.balanceId(),
+		generatedEvents.add(new BalanceEntryCreated(createEntry.balanceId(), IdGenerator.generateId(),
 				createEntry.description(), createEntry.creationDate(),
 				createEntry.amount()));
 		return generatedEvents;
@@ -239,11 +199,7 @@ public class Balance {
 	}
 
 	public Balance handle(BalanceEntryCreated balanceEntryCreatedEvent) {
-		BalanceEntry newEntry = new BalanceEntry(IdGenerator.generateId(),
-				balanceEntryCreatedEvent.entryDescription(),
-				balanceEntryCreatedEvent.creationDate(),
-				balanceEntryCreatedEvent.amount());
-		this.entries.add(newEntry);
+		addEntry(balanceEntryCreatedEvent.entryGuid(), balanceEntryCreatedEvent.entryDescription(), balanceEntryCreatedEvent.creationDate(), balanceEntryCreatedEvent.amount());
 		return this;
 	}
 
@@ -257,6 +213,14 @@ public class Balance {
 
 	public Balance handle(BalanceEntryDeleted balanceEntryDeletedEvent) {
 		deleteEntry(balanceEntryDeletedEvent.entryGuid());
+		return this;
+	}
+
+	Balance loadFromEvents(List<BalanceEvent> events) {
+		for (BalanceEvent event : events) {
+			this.handle(event);
+		}
+
 		return this;
 	}
 

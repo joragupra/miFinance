@@ -20,18 +20,18 @@ public class BalanceService {
 
 	public void addEntry(Balance balance, String description, Date recordedAt,
 			long amountCents) {
-		BalanceEntry balanceEntry = balance.addEntry(description, recordedAt,
-				amountCents);
+		BalanceEntry balanceEntry = balance.addEntry(IdGenerator.generateId(), description, recordedAt,
+				Money.fromCents(amountCents));
 	}
 
-	public void updateEntry(Balance balance, long balanceEntryId,
+	public void updateEntry(Balance balance, String balanceEntryGuid,
 			String description, Date recordedAt, long amountCents) {
-		BalanceEntry balanceEntry = balance.updateEntry(balanceEntryId,
-				description, recordedAt, amountCents);
+		BalanceEntry balanceEntry = balance.updateEntry(balanceEntryGuid,
+				description, recordedAt, Money.fromCents(amountCents));
 	}
 
-	public void deleteEntry(Balance balance, long balanceEntryId) {
-		boolean success = balance.deleteEntry(balanceEntryId);
+	public void deleteEntry(Balance balance, String balanceEntryGuid) {
+		boolean success = balance.deleteEntry(balanceEntryGuid);
 	}
 
 	public void deleteAllEntries(Balance balance) {

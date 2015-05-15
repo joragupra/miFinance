@@ -2,6 +2,7 @@ package com.tinyexpenses.balance;
 
 import org.junit.*;
 import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -76,15 +77,17 @@ public class BalanceTest {
 
 	@Test
 	public void testBalanceEntryCreated() {
+		final String guid = IdGenerator.generateId();
 		final String description = "Book purchase";
 		final java.util.Date createdAt = new java.util.Date();
 		final Money amount = Money.fromCents(1250);
 		BalanceEntryCreated balanceEntryCreatedEvent = new BalanceEntryCreated(
-				6789L, description, createdAt, amount);
+				6789L, guid, description, createdAt, amount);
 
 		balance.handle(balanceEntryCreatedEvent);
 
 		assertEquals(1, balance.entries().size());
+		assertEquals(guid, ((BalanceEntry) balance.entries().get(0)).guid());
 		assertEquals(description,
 				((BalanceEntry) balance.entries().get(0)).description());
 		assertEquals(createdAt,
@@ -139,7 +142,7 @@ public class BalanceTest {
 		final java.util.Date createdAt = new java.util.Date();
 		final Money amount = Money.fromCents(1250);
 		BalanceEntryCreated balanceEntryCreatedEvent = new BalanceEntryCreated(
-				6789L, description, createdAt, amount);
+				6789L, IdGenerator.generateId(), description, createdAt, amount);
 		balance.handle(balanceEntryCreatedEvent);
 		return ((BalanceEntry) balance.entries().get(0)).guid();
 	}
@@ -180,6 +183,81 @@ public class BalanceTest {
 		checkBalanceEvent(generatedEvents.get(0), BalanceEntryDeleted.class);
 		checkBalanceEvent(generatedEvents.get(1), BalanceEntryDeleted.class);
 		checkBalanceEvent(generatedEvents.get(2), BalanceEntryDeleted.class);
+	}
+
+	@Test
+	public void testLoadFromEvents_WhenBalanceIsJustCreated() {
+		final long balanceId = 123456789L;
+		final String balanceName = "General ledger";
+		List<BalanceEvent> events = new ArrayList<>();
+		BalanceCreated created = new BalanceCreated(balanceId);
+		BalanceRenamed renamed = new BalanceRenamed(balanceId, balanceName);
+		events.add(created);
+		events.add(renamed);
+
+		balance.loadFromEvents(events);
+
+		assertEquals(balanceId, balance.id());
+		assertEquals(balanceName, balance.name());
+	}
+
+	@Test
+	public void testLoadFromEvents_WhenTwoEntriesAreAdded() {
+		final long balanceId = 123456789L;
+		final String balanceName = "General ledger";
+		final String firstEntryDescription = "Dinner";
+		final java.util.Date firstEntryCreationDate = new java.util.Date();
+		final Money firstEntryAmount = Money.fromCents(3400);
+		final String secondEntryDescription = "Book purchase";
+		final java.util.Date secondEntryCreationDate = new java.util.Date();
+		final Money secondEntryAmount = Money.fromCents(2780);
+		List<BalanceEvent> events = new ArrayList<>();
+		BalanceCreated created = new BalanceCreated(balanceId);
+		BalanceRenamed renamed = new BalanceRenamed(balanceId, balanceName);
+		BalanceEntryCreated firstEntryCreated = new BalanceEntryCreated(balanceId, IdGenerator.generateId(), firstEntryDescription, firstEntryCreationDate, firstEntryAmount);
+		BalanceEntryCreated secondCreated = new BalanceEntryCreated(balanceId, IdGenerator.generateId(), secondEntryDescription, secondEntryCreationDate, secondEntryAmount);
+		events.add(created);
+		events.add(renamed);
+		events.add(firstEntryCreated);
+		events.add(secondCreated);
+
+		balance.loadFromEvents(events);
+
+		assertEquals(2, balance.entries().size());
+		assertEquals(firstEntryDescription, ((BalanceEntry) balance.entries().get(0)).description());
+		assertEquals(firstEntryCreationDate, ((BalanceEntry) balance.entries().get(0)).recordedAt());
+		assertEquals(firstEntryAmount, ((BalanceEntry) balance.entries().get(0)).amount());
+		assertEquals(secondEntryDescription, ((BalanceEntry) balance.entries().get(1)).description());
+		assertEquals(secondEntryCreationDate, ((BalanceEntry) balance.entries().get(1)).recordedAt());
+		assertEquals(secondEntryAmount, ((BalanceEntry) balance.entries().get(1)).amount());
+	}
+
+	@Test
+	public void testLoadFromEvents_WhenOneEntryIsDeleted() {
+		final long balanceId = 123456789L;
+		final String balanceName = "General ledger";
+		final String firstEntryGuid = IdGenerator.generateId();
+		final String secondEntryDescription = "Book purchase";
+		final java.util.Date secondEntryCreationDate = new java.util.Date();
+		final Money secondEntryAmount = Money.fromCents(2780);
+		List<BalanceEvent> events = new ArrayList<>();
+		BalanceCreated created = new BalanceCreated(balanceId);
+		BalanceRenamed renamed = new BalanceRenamed(balanceId, balanceName);
+		BalanceEntryCreated firstEntryCreated = new BalanceEntryCreated(balanceId, firstEntryGuid, "Dinner", new java.util.Date(), Money.fromCents(3400));
+		BalanceEntryCreated secondCreated = new BalanceEntryCreated(balanceId, IdGenerator.generateId(), secondEntryDescription, secondEntryCreationDate, secondEntryAmount);
+		BalanceEntryDeleted firstEntryDeleted = new BalanceEntryDeleted(balanceId, firstEntryGuid);
+		events.add(created);
+		events.add(renamed);
+		events.add(firstEntryCreated);
+		events.add(secondCreated);
+		events.add(firstEntryDeleted);
+
+		balance.loadFromEvents(events);
+
+		assertEquals(1, balance.entries().size());
+		assertEquals(secondEntryDescription, ((BalanceEntry) balance.entries().get(0)).description());
+		assertEquals(secondEntryCreationDate, ((BalanceEntry) balance.entries().get(0)).recordedAt());
+		assertEquals(secondEntryAmount, ((BalanceEntry) balance.entries().get(0)).amount());
 	}
 
 }
