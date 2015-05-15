@@ -2,14 +2,14 @@ package com.tinyexpenses.balance;
 
 class BalanceEvent {
 
-    protected long balanceId;
+	protected long balanceId;
 
-    protected BalanceEvent(long balanceId) {
-        this.balanceId = balanceId;
-    }
+	protected BalanceEvent(long balanceId) {
+		this.balanceId = balanceId;
+	}
 
-    protected long balanceId() {
-        return this.balanceId;
-    }
+	protected long balanceId() {
+		return this.balanceId;
+	}
 
 }

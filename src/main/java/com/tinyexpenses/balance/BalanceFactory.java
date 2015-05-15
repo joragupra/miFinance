@@ -4,12 +4,12 @@ import java.util.List;
 
 class BalanceFactory {
 
-    Balance createBalance(List<BalanceEntry> entries) {
+	Balance createBalance(List<BalanceEntry> entries) {
 
-        Balance balance = new Balance();
-        balance.initBalanceEntries(entries);
-        return balance;
+		Balance balance = new Balance();
+		balance.initBalanceEntries(entries);
+		return balance;
 
-    }
+	}
 
 }
