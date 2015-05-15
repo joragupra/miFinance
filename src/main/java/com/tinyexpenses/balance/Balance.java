@@ -223,6 +223,11 @@ public class Balance {
 		return generatedEvents;
 	}
 
+	public Balance handle(BalanceEvent event) {
+		event.apply(this);
+		return this;
+	}
+
 	public Balance handle(BalanceCreated balanceCreatedEvent) {
 		this.assignId(balanceCreatedEvent.balanceId());
 		return this;

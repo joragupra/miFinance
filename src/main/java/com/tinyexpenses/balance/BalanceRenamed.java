@@ -13,4 +13,8 @@ class BalanceRenamed extends BalanceEvent {
 		return this.name;
 	}
 
+	protected void apply(Balance balance) {
+		balance.handle(this);
+	}
+
 }

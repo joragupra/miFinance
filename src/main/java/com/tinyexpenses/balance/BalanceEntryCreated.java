@@ -26,4 +26,8 @@ class BalanceEntryCreated extends BalanceEvent {
 		return this.amount;
 	}
 
+	protected void apply(Balance balance) {
+		balance.handle(this);
+	}
+
 }

@@ -1,6 +1,6 @@
 package com.tinyexpenses.balance;
 
-class BalanceEvent {
+abstract class BalanceEvent {
 
 	protected long balanceId;
 
@@ -11,5 +11,7 @@ class BalanceEvent {
 	protected long balanceId() {
 		return this.balanceId;
 	}
+
+	protected abstract void apply(Balance balance);
 
 }

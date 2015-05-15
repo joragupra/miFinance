@@ -6,4 +6,8 @@ class BalanceCreated extends BalanceEvent {
 		super(balanceId);
 	}
 
+	protected void apply(Balance balance) {
+		balance.handle(this);
+	}
+
 }
