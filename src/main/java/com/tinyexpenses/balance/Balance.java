@@ -146,6 +146,12 @@ public class Balance {
         return generatedEvents;
     }
 
+    public List<BalanceEvent> handle(CreateEntry createEntry) {
+        List<BalanceEvent> generatedEvents = new ArrayList<>();
+        generatedEvents.add(new BalanceEntryCreated(createEntry.balanceId(), createEntry.description(), createEntry.creationDate(), createEntry.amount()));
+        return generatedEvents;
+    }
+
     public Balance handle(BalanceCreated balanceCreatedEvent) {
         this.assignId(balanceCreatedEvent.balanceId());
         return this;
@@ -153,6 +159,12 @@ public class Balance {
 
     public Balance handle(BalanceRenamed balanceRenamedEvent) {
         this.rename(balanceRenamedEvent.name());
+        return this;
+    }
+
+    public Balance handle(BalanceEntryCreated balanceEntryCreatedEvent) {
+        BalanceEntry newEntry = new BalanceEntry(IdGenerator.generateId(), balanceEntryCreatedEvent.entryDescription(), balanceEntryCreatedEvent.creationDate(), balanceEntryCreatedEvent.amount());
+        this.entries.add(newEntry);
         return this;
     }
 

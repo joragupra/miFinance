@@ -7,6 +7,8 @@ public class BalanceEntry {
 
     private Long id;
 
+    private String guid;
+
     private String description;
 
     private Date recordedAt;
@@ -24,8 +26,19 @@ public class BalanceEntry {
         this.amount = Money.fromCents(amountCents);
     }
 
+    BalanceEntry(String guid, String description, Date recordedAt, Money amount) {
+        this.guid = guid;
+        this.description = description;
+        this.recordedAt = recordedAt;
+        this.amount = amount;
+    }
+
     public Long id() {
         return id;
+    }
+
+    public String guid() {
+        return guid;
     }
 
     public String description() {

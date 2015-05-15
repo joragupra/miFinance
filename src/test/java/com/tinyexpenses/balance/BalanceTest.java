@@ -49,4 +49,35 @@ public class BalanceTest {
       assertEquals(balanceName, balance.handle(balanceRenamedEvent).name());
   }
 
+  @Test
+  public void testCreateEntry() {
+      final String description = "Book purchase";
+      final java.util.Date createdAt = new java.util.Date();
+      final Money amount = Money.fromCents(1250);
+      CreateEntry command = new CreateEntry(6789L, description, createdAt, amount);
+
+      List<BalanceEvent> generatedEvents = balance.handle(command);
+
+      checkBalanceEvent(generatedEvents.get(0), BalanceEntryCreated.class);
+      assertEquals(description, ((BalanceEntryCreated) generatedEvents.get(0)).entryDescription());
+      assertEquals(createdAt, ((BalanceEntryCreated) generatedEvents.get(0)).creationDate());
+      assertEquals(amount, ((BalanceEntryCreated) generatedEvents.get(0)).amount());
+  }
+
+  @Test
+  public void testBalanceEntryCreated() {
+      final long balanceId = 6789L;
+      final String description = "Book purchase";
+      final java.util.Date createdAt = new java.util.Date();
+      final Money amount = Money.fromCents(1250);
+      BalanceEntryCreated balanceEntryCreatedEvent = new BalanceEntryCreated(balanceId, description, createdAt, amount);
+
+      balance.handle(balanceEntryCreatedEvent);
+
+      assertEquals(1, balance.entries().size());
+      assertEquals(description, ((BalanceEntry) balance.entries().get(0)).description());
+      assertEquals(createdAt, ((BalanceEntry) balance.entries().get(0)).recordedAt());
+      assertEquals(amount, ((BalanceEntry) balance.entries().get(0)).amount());
+  }
+
 }
