@@ -144,4 +144,27 @@ public class BalanceTest {
 		return ((BalanceEntry) balance.entries().get(0)).guid();
 	}
 
+	@Test
+	public void testDeleteEntry() {
+		final String entryGuid = initializeBalanceWithOneEntry();
+		DeleteEntry command = new DeleteEntry(112233L, entryGuid);
+
+		List<BalanceEvent> generatedEvents = balance.handle(command);
+
+		checkBalanceEvent(generatedEvents.get(0), BalanceEntryDeleted.class);
+		assertEquals(entryGuid,
+				((BalanceEntryDeleted) generatedEvents.get(0)).entryGuid());
+	}
+
+	@Test
+	public void testBalanceEntryDeleted() {
+		final String entryGuid = initializeBalanceWithOneEntry();
+		BalanceEntryDeleted balanceEntryDeletedEvent = new BalanceEntryDeleted(
+				5544L, entryGuid);
+
+		balance.handle(balanceEntryDeletedEvent);
+
+		assertEquals(0, balance.entries().size());
+	}
+
 }

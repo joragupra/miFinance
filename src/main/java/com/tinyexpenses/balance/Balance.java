@@ -111,8 +111,20 @@ public class Balance {
 		return balanceEntry;
 	}
 
+	// TODO - deprecated: remove
 	public boolean deleteEntry(long entryId) {
 		int pos = findEntryPositionForId(entryId);
+
+		if (pos == -1) {
+			return false;
+		}
+
+		this.entries.remove(pos);
+		return true;
+	}
+
+	public boolean deleteEntry(String entryGuid) {
+		int pos = findEntryPositionForGuid(entryGuid);
 
 		if (pos == -1) {
 			return false;
@@ -196,6 +208,13 @@ public class Balance {
 		return generatedEvents;
 	}
 
+	public List<BalanceEvent> handle(DeleteEntry deleteEntry) {
+		List<BalanceEvent> generatedEvents = new ArrayList<>();
+		generatedEvents.add(new BalanceEntryDeleted(deleteEntry.balanceId(),
+				deleteEntry.entryGuid()));
+		return generatedEvents;
+	}
+
 	public Balance handle(BalanceCreated balanceCreatedEvent) {
 		this.assignId(balanceCreatedEvent.balanceId());
 		return this;
@@ -220,6 +239,11 @@ public class Balance {
 				balanceEntryUpdatedEvent.entryDescription(),
 				balanceEntryUpdatedEvent.creationDate(),
 				balanceEntryUpdatedEvent.amount());
+		return this;
+	}
+
+	public Balance handle(BalanceEntryDeleted balanceEntryDeletedEvent) {
+		deleteEntry(balanceEntryDeletedEvent.entryGuid());
 		return this;
 	}
 
