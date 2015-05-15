@@ -65,6 +65,10 @@ public class BalanceEntry {
         this.amount = Money.fromCents(amountCents);
     }
 
+    void changeAmount(Money amount) {
+        this.amount = amount;
+    }
+
     static final Comparator<BalanceEntry> byRecordedDate = new Comparator<BalanceEntry>() {
         @Override
         public int compare(BalanceEntry entry1, BalanceEntry entry2) {

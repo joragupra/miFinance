@@ -96,6 +96,22 @@ public class BalanceTest {
       assertEquals(amount, ((BalanceEntryUpdated) generatedEvents.get(0)).amount());
   }
 
+  @Test
+  public void testBalanceEntryUpdated() {
+      final String entryGuid = initializeBalanceWithOneEntry();
+      final String description = "Dinner";
+      final java.util.Date createdAt = new java.util.Date();
+      final Money amount = Money.fromCents(2400);
+      BalanceEntryUpdated balanceEntryUpdatedEvent = new BalanceEntryUpdated(1122L, entryGuid, description, createdAt, amount);
+
+      balance.handle(balanceEntryUpdatedEvent);
+
+      assertEquals(1, balance.entries().size());
+      assertEquals(description, ((BalanceEntry) balance.entries().get(0)).description());
+      assertEquals(createdAt, ((BalanceEntry) balance.entries().get(0)).recordedAt());
+      assertEquals(amount, ((BalanceEntry) balance.entries().get(0)).amount());
+  }
+
   private String initializeBalanceWithOneEntry() {
       final String description = "Book purchase";
       final java.util.Date createdAt = new java.util.Date();

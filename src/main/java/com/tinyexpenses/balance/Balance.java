@@ -76,6 +76,7 @@ public class Balance {
         return newEntry;
     }
 
+    //TODO - deprecated: remove
     public BalanceEntry updateEntry(long entryId, String description, Date recordedAt, long amountCents) {
         int pos = findEntryPositionForId(entryId);
 
@@ -87,6 +88,20 @@ public class Balance {
         balanceEntry.changeDescription(description);
         balanceEntry.changeRecordedAt(recordedAt);
         balanceEntry.changeAmount(amountCents);
+        return balanceEntry;
+    }
+
+    public BalanceEntry updateEntry(String entryGuid, String description, Date recordedAt, Money amount) {
+        int pos = findEntryPositionForGuid(entryGuid);
+
+        if (pos == -1) {
+            return null;
+        }
+
+        BalanceEntry balanceEntry = this.entries.get(pos);
+        balanceEntry.changeDescription(description);
+        balanceEntry.changeRecordedAt(recordedAt);
+        balanceEntry.changeAmount(amount);
         return balanceEntry;
     }
 
@@ -109,6 +124,17 @@ public class Balance {
         int pos = -1;
         for (int i = 0; i < this.entries.size(); i++) {
             if (this.entries.get(i).id() == entryId) {
+                pos = i;
+                break;
+            }
+        }
+        return pos;
+    }
+
+    private int findEntryPositionForGuid(String entryGuid) {
+        int pos = -1;
+        for (int i = 0; i < this.entries.size(); i++) {
+            if (this.entries.get(i).guid() == entryGuid) {
                 pos = i;
                 break;
             }
@@ -171,6 +197,11 @@ public class Balance {
     public Balance handle(BalanceEntryCreated balanceEntryCreatedEvent) {
         BalanceEntry newEntry = new BalanceEntry(IdGenerator.generateId(), balanceEntryCreatedEvent.entryDescription(), balanceEntryCreatedEvent.creationDate(), balanceEntryCreatedEvent.amount());
         this.entries.add(newEntry);
+        return this;
+    }
+
+    public Balance handle(BalanceEntryUpdated balanceEntryUpdatedEvent) {
+        updateEntry(balanceEntryUpdatedEvent.entryGuid(), balanceEntryUpdatedEvent.entryDescription(), balanceEntryUpdatedEvent.creationDate(), balanceEntryUpdatedEvent.amount());
         return this;
     }
 
