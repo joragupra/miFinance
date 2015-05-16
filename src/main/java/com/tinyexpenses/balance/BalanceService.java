@@ -20,8 +20,8 @@ public class BalanceService {
 
 	public void addEntry(Balance balance, String description, Date recordedAt,
 			long amountCents) {
-		BalanceEntry balanceEntry = balance.addEntry(IdGenerator.generateId(), description, recordedAt,
-				Money.fromCents(amountCents));
+		BalanceEntry balanceEntry = balance.addEntry(IdGenerator.generateId(),
+				description, recordedAt, Money.fromCents(amountCents));
 	}
 
 	public void updateEntry(Balance balance, String balanceEntryGuid,

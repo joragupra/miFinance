@@ -69,8 +69,10 @@ public class Balance {
 		return this;
 	}
 
-	public BalanceEntry addEntry(String guid, String description, Date recordedAt, Money amount) {
-		BalanceEntry newEntry = new BalanceEntry(guid, description, recordedAt, amount);
+	public BalanceEntry addEntry(String guid, String description,
+			Date recordedAt, Money amount) {
+		BalanceEntry newEntry = new BalanceEntry(guid, description, recordedAt,
+				amount);
 		this.entries.add(newEntry);
 
 		this.entries = sortEntries(this.sortMethod);
@@ -153,9 +155,9 @@ public class Balance {
 
 	public List<BalanceEvent> handle(CreateEntry createEntry) {
 		List<BalanceEvent> generatedEvents = new ArrayList<>();
-		generatedEvents.add(new BalanceEntryCreated(createEntry.balanceId(), IdGenerator.generateId(),
-				createEntry.description(), createEntry.creationDate(),
-				createEntry.amount()));
+		generatedEvents.add(new BalanceEntryCreated(createEntry.balanceId(),
+				IdGenerator.generateId(), createEntry.description(),
+				createEntry.creationDate(), createEntry.amount()));
 		return generatedEvents;
 	}
 
@@ -198,7 +200,10 @@ public class Balance {
 	}
 
 	public Balance handle(BalanceEntryCreated balanceEntryCreatedEvent) {
-		addEntry(balanceEntryCreatedEvent.entryGuid(), balanceEntryCreatedEvent.entryDescription(), balanceEntryCreatedEvent.creationDate(), balanceEntryCreatedEvent.amount());
+		addEntry(balanceEntryCreatedEvent.entryGuid(),
+				balanceEntryCreatedEvent.entryDescription(),
+				balanceEntryCreatedEvent.creationDate(),
+				balanceEntryCreatedEvent.amount());
 		return this;
 	}
 

@@ -214,8 +214,12 @@ public class BalanceTest {
 		List<BalanceEvent> events = new ArrayList<>();
 		BalanceCreated created = new BalanceCreated(balanceId);
 		BalanceRenamed renamed = new BalanceRenamed(balanceId, balanceName);
-		BalanceEntryCreated firstEntryCreated = new BalanceEntryCreated(balanceId, IdGenerator.generateId(), firstEntryDescription, firstEntryCreationDate, firstEntryAmount);
-		BalanceEntryCreated secondCreated = new BalanceEntryCreated(balanceId, IdGenerator.generateId(), secondEntryDescription, secondEntryCreationDate, secondEntryAmount);
+		BalanceEntryCreated firstEntryCreated = new BalanceEntryCreated(
+				balanceId, IdGenerator.generateId(), firstEntryDescription,
+				firstEntryCreationDate, firstEntryAmount);
+		BalanceEntryCreated secondCreated = new BalanceEntryCreated(balanceId,
+				IdGenerator.generateId(), secondEntryDescription,
+				secondEntryCreationDate, secondEntryAmount);
 		events.add(created);
 		events.add(renamed);
 		events.add(firstEntryCreated);
@@ -224,12 +228,18 @@ public class BalanceTest {
 		balance.loadFromEvents(events);
 
 		assertEquals(2, balance.entries().size());
-		assertEquals(firstEntryDescription, ((BalanceEntry) balance.entries().get(0)).description());
-		assertEquals(firstEntryCreationDate, ((BalanceEntry) balance.entries().get(0)).recordedAt());
-		assertEquals(firstEntryAmount, ((BalanceEntry) balance.entries().get(0)).amount());
-		assertEquals(secondEntryDescription, ((BalanceEntry) balance.entries().get(1)).description());
-		assertEquals(secondEntryCreationDate, ((BalanceEntry) balance.entries().get(1)).recordedAt());
-		assertEquals(secondEntryAmount, ((BalanceEntry) balance.entries().get(1)).amount());
+		assertEquals(firstEntryDescription, ((BalanceEntry) balance.entries()
+				.get(0)).description());
+		assertEquals(firstEntryCreationDate, ((BalanceEntry) balance.entries()
+				.get(0)).recordedAt());
+		assertEquals(firstEntryAmount,
+				((BalanceEntry) balance.entries().get(0)).amount());
+		assertEquals(secondEntryDescription, ((BalanceEntry) balance.entries()
+				.get(1)).description());
+		assertEquals(secondEntryCreationDate, ((BalanceEntry) balance.entries()
+				.get(1)).recordedAt());
+		assertEquals(secondEntryAmount, ((BalanceEntry) balance.entries()
+				.get(1)).amount());
 	}
 
 	@Test
@@ -243,9 +253,14 @@ public class BalanceTest {
 		List<BalanceEvent> events = new ArrayList<>();
 		BalanceCreated created = new BalanceCreated(balanceId);
 		BalanceRenamed renamed = new BalanceRenamed(balanceId, balanceName);
-		BalanceEntryCreated firstEntryCreated = new BalanceEntryCreated(balanceId, firstEntryGuid, "Dinner", new java.util.Date(), Money.fromCents(3400));
-		BalanceEntryCreated secondCreated = new BalanceEntryCreated(balanceId, IdGenerator.generateId(), secondEntryDescription, secondEntryCreationDate, secondEntryAmount);
-		BalanceEntryDeleted firstEntryDeleted = new BalanceEntryDeleted(balanceId, firstEntryGuid);
+		BalanceEntryCreated firstEntryCreated = new BalanceEntryCreated(
+				balanceId, firstEntryGuid, "Dinner", new java.util.Date(),
+				Money.fromCents(3400));
+		BalanceEntryCreated secondCreated = new BalanceEntryCreated(balanceId,
+				IdGenerator.generateId(), secondEntryDescription,
+				secondEntryCreationDate, secondEntryAmount);
+		BalanceEntryDeleted firstEntryDeleted = new BalanceEntryDeleted(
+				balanceId, firstEntryGuid);
 		events.add(created);
 		events.add(renamed);
 		events.add(firstEntryCreated);
@@ -255,9 +270,12 @@ public class BalanceTest {
 		balance.loadFromEvents(events);
 
 		assertEquals(1, balance.entries().size());
-		assertEquals(secondEntryDescription, ((BalanceEntry) balance.entries().get(0)).description());
-		assertEquals(secondEntryCreationDate, ((BalanceEntry) balance.entries().get(0)).recordedAt());
-		assertEquals(secondEntryAmount, ((BalanceEntry) balance.entries().get(0)).amount());
+		assertEquals(secondEntryDescription, ((BalanceEntry) balance.entries()
+				.get(0)).description());
+		assertEquals(secondEntryCreationDate, ((BalanceEntry) balance.entries()
+				.get(0)).recordedAt());
+		assertEquals(secondEntryAmount, ((BalanceEntry) balance.entries()
+				.get(0)).amount());
 	}
 
 }

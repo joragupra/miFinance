@@ -7,16 +7,16 @@ class CreateBalance extends BalanceCommand {
 	private String balanceName;
 
 	public CreateBalance(long balanceId, String balanceName) {
-			super(balanceId);
-			this.balanceName = balanceName;
+		super(balanceId);
+		this.balanceName = balanceName;
 	}
 
 	public String balanceName() {
-			return this.balanceName;
+		return this.balanceName;
 	}
 
 	List<BalanceEvent> execute(Balance balance) {
-			return balance.handle(this);
+		return balance.handle(this);
 	}
 
 }

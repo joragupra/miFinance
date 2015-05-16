@@ -13,8 +13,8 @@ class BalanceEntryDeleted extends BalanceEvent {
 		return this.entryGuid;
 	}
 
-    protected void apply(Balance balance) {
-        balance.handle(this);
-    }
+	protected void apply(Balance balance) {
+		balance.handle(this);
+	}
 
 }
