@@ -1,21 +1,22 @@
 package com.tinyexpenses.balance;
 
-public class CreateBalance {
+import java.util.List;
 
-	private long balanceId;
+class CreateBalance extends BalanceCommand {
+
 	private String balanceName;
 
 	public CreateBalance(long balanceId, String balanceName) {
-		this.balanceId = balanceId;
-		this.balanceName = balanceName;
-	}
-
-	public long balanceId() {
-		return this.balanceId;
+			super(balanceId);
+			this.balanceName = balanceName;
 	}
 
 	public String balanceName() {
-		return this.balanceName;
+			return this.balanceName;
+	}
+
+	List<BalanceEvent> execute(Balance balance) {
+			return balance.handle(this);
 	}
 
 }

@@ -111,7 +111,6 @@ public class Balance {
 	private int findEntryPositionForGuid(String entryGuid) {
 		int pos = -1;
 		for (int i = 0; i < this.entries.size(); i++) {
-			System.out.println("Looking for " + entryGuid + ". Now we have " + this.entries.get(i).guid());
 			if (this.entries.get(i).guid() == entryGuid) {
 				pos = i;
 				break;
