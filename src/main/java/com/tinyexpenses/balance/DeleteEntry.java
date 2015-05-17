@@ -1,21 +1,22 @@
 package com.tinyexpenses.balance;
 
-class DeleteEntry {
+import java.util.List;
 
-	private long balanceId;
+class DeleteEntry extends BalanceCommand {
+
 	private String entryGuid;
 
 	DeleteEntry(long balanceId, String entryGuid) {
-		this.balanceId = balanceId;
+		super(balanceId);
 		this.entryGuid = entryGuid;
-	}
-
-	long balanceId() {
-		return this.balanceId;
 	}
 
 	String entryGuid() {
 		return this.entryGuid;
+	}
+
+	List<BalanceEvent> execute(Balance balance) {
+		return balance.handle(this);
 	}
 
 }

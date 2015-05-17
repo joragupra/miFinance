@@ -1,8 +1,9 @@
 package com.tinyexpenses.balance;
 
-class UpdateBalanceEntry {
+import java.util.List;
 
-	private long balanceId;
+class UpdateBalanceEntry extends BalanceCommand {
+
 	private String entryGuid;
 	private String entryDescription;
 	private java.util.Date createdAt;
@@ -10,15 +11,11 @@ class UpdateBalanceEntry {
 
 	UpdateBalanceEntry(long balanceId, String entryGuid,
 			String entryDescription, java.util.Date createdAt, Money amount) {
-		this.balanceId = balanceId;
+		super(balanceId);
 		this.entryGuid = entryGuid;
 		this.entryDescription = entryDescription;
 		this.createdAt = createdAt;
 		this.amount = amount;
-	}
-
-	long balanceId() {
-		return this.balanceId;
 	}
 
 	String entryGuid() {
@@ -35,6 +32,10 @@ class UpdateBalanceEntry {
 
 	Money amount() {
 		return this.amount;
+	}
+
+	List<BalanceEvent> execute(Balance balance) {
+		return balance.handle(this);
 	}
 
 }

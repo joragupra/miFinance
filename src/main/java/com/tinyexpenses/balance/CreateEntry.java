@@ -1,22 +1,19 @@
 package com.tinyexpenses.balance;
 
-class CreateEntry {
+import java.util.List;
 
-	private long balanceId;
+class CreateEntry extends BalanceCommand {
+
 	private String description;
 	private java.util.Date creationDate;
 	private Money amount;
 
 	CreateEntry(long balanceId, String description,
 			java.util.Date creationDate, Money amount) {
-		this.balanceId = balanceId;
+		super(balanceId);
 		this.description = description;
 		this.creationDate = creationDate;
 		this.amount = amount;
-	}
-
-	long balanceId() {
-		return this.balanceId;
 	}
 
 	String description() {
@@ -29,6 +26,10 @@ class CreateEntry {
 
 	Money amount() {
 		return this.amount;
+	}
+
+	List<BalanceEvent> execute(Balance balance) {
+		return balance.handle(this);
 	}
 
 }

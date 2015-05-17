@@ -1,15 +1,15 @@
 package com.tinyexpenses.balance;
 
-class DeleteAllEntries {
+import java.util.List;
 
-	long balanceId;
+class DeleteAllEntries extends BalanceCommand {
 
 	DeleteAllEntries(long balanceId) {
-		this.balanceId = balanceId;
+		super(balanceId);
 	}
 
-	long balanceId() {
-		return this.balanceId;
+	List<BalanceEvent> execute(Balance balance) {
+		return balance.handle(this);
 	}
 
 }
