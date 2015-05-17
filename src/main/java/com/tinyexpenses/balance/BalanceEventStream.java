@@ -9,7 +9,7 @@ class BalanceEventStream {
 
 	private static BalanceEventStream uniqueInstance;
 
-	private java.util.Map<Long, java.util.List<BalanceEvent>> eventsForBalance = new java.util.HashMap<>();
+	private Map<Long, List<BalanceEvent>> eventsForBalance = new HashMap<>();
 
 	private BalanceEventStream() {
 		super();
@@ -45,6 +45,11 @@ class BalanceEventStream {
 		for (BalanceEvent event : events) {
 			this.registerEvent(event.balanceId(), event);
 		}
+	}
+
+	//TODO - remove: this is a dangerous method only for testing purposes
+	void forgetAllEvents() {
+		eventsForBalance = new HashMap<>();
 	}
 
 }

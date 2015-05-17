@@ -10,6 +10,8 @@ public class BalanceService {
 	private BalanceEventStream eventStream;
 	private BalanceCommandHandler commandHandler;
 
+	private long nextBalanceId = 1;
+
 	public BalanceService() {
 
 		this(new ArrayList<BalanceEvent>());
@@ -39,20 +41,48 @@ public class BalanceService {
 		return balance;
 	}
 
+	//TODO - balanceId should be changed to String
+	public long openNewBalance(String balanceName) {
+		final long balanceId = nextBalanceId++;
+		CreateBalance command = new CreateBalance(balanceId, balanceName);
+		commandHandler.handle(command);
+		return balanceId;
+	}
+
+	public void addEntry(long balanceId, String description, Date recordedAt, long amountCents) {
+		CreateEntry command = new CreateEntry(balanceId, description, recordedAt, Money.fromCents(amountCents));
+		commandHandler.handle(command);
+	}
+
 	public void addEntry(Balance balance, String description, Date recordedAt,
 			long amountCents) {
 		BalanceEntry balanceEntry = balance.addEntry(IdGenerator.generateId(),
 				description, recordedAt, Money.fromCents(amountCents));
 	}
 
+	public void updateEntry(long balanceId, String balanceEntryGuid,
+			String description, Date recordedAt, long amountCents) {
+		UpdateBalanceEntry command = new UpdateBalanceEntry(balanceId, balanceEntryGuid, description, recordedAt, Money.fromCents(amountCents));
+		commandHandler.handle(command);
+	}
+
 	public void updateEntry(Balance balance, String balanceEntryGuid,
 			String description, Date recordedAt, long amountCents) {
-		BalanceEntry balanceEntry = balance.updateEntry(balanceEntryGuid,
-				description, recordedAt, Money.fromCents(amountCents));
+		balance.updateEntry(balanceEntryGuid, description, recordedAt, Money.fromCents(amountCents));
+	}
+
+	public void deleteEntry(long balanceId, String balanceEntryGuid) {
+		DeleteEntry command = new DeleteEntry(balanceId, balanceEntryGuid);
+		commandHandler.handle(command);
 	}
 
 	public void deleteEntry(Balance balance, String balanceEntryGuid) {
 		boolean success = balance.deleteEntry(balanceEntryGuid);
+	}
+
+	public void deleteAllEntries(long balanceId) {
+		DeleteAllEntries command = new DeleteAllEntries(balanceId);
+		commandHandler.handle(command);
 	}
 
 	public void deleteAllEntries(Balance balance) {
