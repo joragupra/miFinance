@@ -6,8 +6,8 @@ class BalanceFactory {
 
 	Balance createEmptyBalance() {
 
-			return new Balance();
-			
+		return new Balance();
+
 	}
 
 	Balance createBalance(List<BalanceEntry> entries) {

@@ -16,7 +16,8 @@ public class BalanceCommandHandlerTest {
 	@Before
 	public void setUp() {
 		this.eventStream = mock(BalanceEventStream.class);
-		this.commandHandler = new BalanceCommandHandler(balanceFactoryStub(), eventStream);
+		this.commandHandler = new BalanceCommandHandler(balanceFactoryStub(),
+				eventStream);
 	}
 
 	@Test

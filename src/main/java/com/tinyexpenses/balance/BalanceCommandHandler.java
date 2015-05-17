@@ -7,7 +7,8 @@ class BalanceCommandHandler {
 	private BalanceFactory factory;
 	private BalanceEventStream eventStream;
 
-	BalanceCommandHandler(BalanceFactory balanceFactory, BalanceEventStream eventStream) {
+	BalanceCommandHandler(BalanceFactory balanceFactory,
+			BalanceEventStream eventStream) {
 		this.factory = balanceFactory;
 		this.eventStream = eventStream;
 	}
