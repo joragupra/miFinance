@@ -1,5 +1,10 @@
 package com.tinyexpenses.balance;
 
+import java.lang.IllegalStateException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 class BalanceEventStream {
 
 	private static BalanceEventStream uniqueInstance;
@@ -29,6 +34,16 @@ class BalanceEventStream {
 
 	void registerEvent(long balanceId, BalanceEvent event) {
 		this.events(balanceId).add(event);
+	}
+
+	void initialize(List<BalanceEvent> events) {
+		if (!this.eventsForBalance.isEmpty()) {
+			throw new IllegalStateException("Trying to initialize a non-empty event stream");
+		}
+
+		for (BalanceEvent event : events) {
+			this.registerEvent(event.balanceId(), event);
+		}
 	}
 
 }

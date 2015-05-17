@@ -1,20 +1,35 @@
 package com.tinyexpenses.balance;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class BalanceService {
 
 	private BalanceFactory factory;
+	private BalanceEventStream eventStream;
+	private BalanceCommandHandler commandHandler;
 
 	public BalanceService() {
 
-		factory = new BalanceFactory();
+		this(new ArrayList<BalanceEvent>());
 
+	}
+
+	public BalanceService(List<BalanceEvent> events) {
+		factory = new BalanceFactory();
+		initializeEventStream(events);
+		commandHandler = new BalanceCommandHandler(factory, eventStream);
+	}
+
+	private void initializeEventStream(List<BalanceEvent> events) {
+		eventStream = BalanceEventStream.getInstance();
+		eventStream.initialize(events);
 	}
 
 	public Balance retrieveBalance() {
 
-		return new Balance();
+		return factory.createEmptyBalance();
 
 	}
 
