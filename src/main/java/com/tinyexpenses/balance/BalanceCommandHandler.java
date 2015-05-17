@@ -4,9 +4,11 @@ import java.util.List;
 
 class BalanceCommandHandler {
 
+	private BalanceFactory factory;
 	private BalanceEventStream eventStream;
 
-	BalanceCommandHandler(BalanceEventStream eventStream) {
+	BalanceCommandHandler(BalanceFactory balanceFactory, BalanceEventStream eventStream) {
+		this.factory = balanceFactory;
 		this.eventStream = eventStream;
 	}
 
@@ -18,7 +20,7 @@ class BalanceCommandHandler {
 		System.out.println(previousEvents.size()
 				+ " previous events found for balance " + balanceId);
 
-		Balance balance = new Balance();
+		Balance balance = factory.createEmptyBalance();
 		balance.loadFromEvents(previousEvents);
 
 		List<BalanceEvent> newEvents = command.execute(balance);
@@ -26,6 +28,7 @@ class BalanceCommandHandler {
 				+ " new events generated for balance " + balanceId);
 
 		for (BalanceEvent event : newEvents) {
+			balance.handle(event);
 			eventStream.registerEvent(balanceId, event);
 		}
 	}

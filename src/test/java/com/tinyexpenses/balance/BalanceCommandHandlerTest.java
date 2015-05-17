@@ -11,11 +11,12 @@ public class BalanceCommandHandlerTest {
 
 	private BalanceCommandHandler commandHandler;
 	private BalanceEventStream eventStream;
+	private Balance mockBalance;
 
 	@Before
 	public void setUp() {
 		this.eventStream = mock(BalanceEventStream.class);
-		this.commandHandler = new BalanceCommandHandler(eventStream);
+		this.commandHandler = new BalanceCommandHandler(balanceFactoryStub(), eventStream);
 	}
 
 	@Test
@@ -27,7 +28,19 @@ public class BalanceCommandHandlerTest {
 
 		commandHandler.handle(new BalanceCommandStub(balanceId));
 
-		verify(eventStream, times(1)).events(eq(balanceId));
+		verify(mockBalance, times(1)).loadFromEvents(previousEvents);
+	}
+
+	@Test
+	public void testHandleCommand_NewEventsAreHandledByBalance() {
+		final long balanceId = 55342L;
+		final String balanceName = "My new balance";
+		List<BalanceEvent> previousEvents = new ArrayList<>();
+		when(eventStream.events(balanceId)).thenReturn(previousEvents);
+
+		commandHandler.handle(new BalanceCommandStub(balanceId));
+
+		verify(mockBalance, times(1)).handle(any(BalanceEventStub.class));
 	}
 
 	@Test
@@ -41,6 +54,13 @@ public class BalanceCommandHandlerTest {
 
 		verify(eventStream, times(1)).registerEvent(eq(balanceId),
 				any(BalanceEventStub.class));
+	}
+
+	private BalanceFactory balanceFactoryStub() {
+		BalanceFactory balanceFactory = mock(BalanceFactory.class);
+		mockBalance = mock(Balance.class);
+		when(balanceFactory.createEmptyBalance()).thenReturn(mockBalance);
+		return balanceFactory;
 	}
 
 	private class BalanceCommandStub extends BalanceCommand {
