@@ -38,7 +38,8 @@ class BalanceEventStream {
 
 	void initialize(List<BalanceEvent> events) {
 		if (!this.eventsForBalance.isEmpty()) {
-			throw new IllegalStateException("Trying to initialize a non-empty event stream");
+			throw new IllegalStateException(
+					"Trying to initialize a non-empty event stream");
 		}
 
 		for (BalanceEvent event : events) {
