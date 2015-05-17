@@ -33,6 +33,12 @@ public class BalanceService {
 
 	}
 
+	public Balance retrieveBalance(long balanceId) {
+		Balance balance = factory.createEmptyBalance();
+		balance.loadFromEvents(eventStream.events(balanceId));
+		return balance;
+	}
+
 	public void addEntry(Balance balance, String description, Date recordedAt,
 			long amountCents) {
 		BalanceEntry balanceEntry = balance.addEntry(IdGenerator.generateId(),
