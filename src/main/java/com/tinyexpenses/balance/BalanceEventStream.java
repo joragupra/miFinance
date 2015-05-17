@@ -47,7 +47,7 @@ class BalanceEventStream {
 		}
 	}
 
-	//TODO - remove: this is a dangerous method only for testing purposes
+	// TODO - remove: this is a dangerous method only for testing purposes
 	void forgetAllEvents() {
 		eventsForBalance = new HashMap<>();
 	}

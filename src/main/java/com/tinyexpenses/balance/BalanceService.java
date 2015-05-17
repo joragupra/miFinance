@@ -41,7 +41,7 @@ public class BalanceService {
 		return balance;
 	}
 
-	//TODO - balanceId should be changed to String
+	// TODO - balanceId should be changed to String
 	public long openNewBalance(String balanceName) {
 		final long balanceId = nextBalanceId++;
 		CreateBalance command = new CreateBalance(balanceId, balanceName);
@@ -49,8 +49,10 @@ public class BalanceService {
 		return balanceId;
 	}
 
-	public void addEntry(long balanceId, String description, Date recordedAt, long amountCents) {
-		CreateEntry command = new CreateEntry(balanceId, description, recordedAt, Money.fromCents(amountCents));
+	public void addEntry(long balanceId, String description, Date recordedAt,
+			long amountCents) {
+		CreateEntry command = new CreateEntry(balanceId, description,
+				recordedAt, Money.fromCents(amountCents));
 		commandHandler.handle(command);
 	}
 
@@ -62,13 +64,16 @@ public class BalanceService {
 
 	public void updateEntry(long balanceId, String balanceEntryGuid,
 			String description, Date recordedAt, long amountCents) {
-		UpdateBalanceEntry command = new UpdateBalanceEntry(balanceId, balanceEntryGuid, description, recordedAt, Money.fromCents(amountCents));
+		UpdateBalanceEntry command = new UpdateBalanceEntry(balanceId,
+				balanceEntryGuid, description, recordedAt,
+				Money.fromCents(amountCents));
 		commandHandler.handle(command);
 	}
 
 	public void updateEntry(Balance balance, String balanceEntryGuid,
 			String description, Date recordedAt, long amountCents) {
-		balance.updateEntry(balanceEntryGuid, description, recordedAt, Money.fromCents(amountCents));
+		balance.updateEntry(balanceEntryGuid, description, recordedAt,
+				Money.fromCents(amountCents));
 	}
 
 	public void deleteEntry(long balanceId, String balanceEntryGuid) {
