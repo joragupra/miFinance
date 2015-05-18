@@ -7,9 +7,9 @@ class BalanceEntryUpdated extends BalanceEvent {
 	private java.util.Date creationDate;
 	private Money amount;
 
-	BalanceEntryUpdated(long balanceId, String entryGuid,
+	BalanceEntryUpdated(String balanceGuid, String entryGuid,
 			String entryDescription, java.util.Date createdAt, Money amount) {
-		super(balanceId);
+		super(balanceGuid);
 		this.entryGuid = entryGuid;
 		this.entryDescription = entryDescription;
 		this.creationDate = createdAt;

@@ -4,14 +4,14 @@ import java.util.List;
 
 abstract class BalanceCommand {
 
-	protected long balanceId;
+	protected String balanceGuid;
 
-	protected BalanceCommand(long balanceId) {
-		this.balanceId = balanceId;
+	protected BalanceCommand(String balanceGuid) {
+		this.balanceGuid = balanceGuid;
 	}
 
-	long balanceId() {
-		return this.balanceId;
+	String balanceGuid() {
+		return this.balanceGuid;
 	}
 
 	abstract List<BalanceEvent> execute(Balance balance);

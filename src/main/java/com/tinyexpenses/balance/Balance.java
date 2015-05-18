@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Balance {
 
-	private long id;
+	private String guid;
 	private String name;
 
 	public enum EntrySortMethod {
@@ -52,12 +52,12 @@ public class Balance {
 		}
 	}
 
-	public void assignId(long id) {
-		this.id = id;
+	public void assignGuid(String guid) {
+		this.guid = guid;
 	}
 
-	public long id() {
-		return this.id;
+	public String guid() {
+		return this.guid;
 	}
 
 	public String name() {
@@ -147,15 +147,15 @@ public class Balance {
 
 	public List<BalanceEvent> handle(CreateBalance createBalance) {
 		List<BalanceEvent> generatedEvents = new ArrayList<>();
-		generatedEvents.add(new BalanceCreated(createBalance.balanceId()));
-		generatedEvents.add(new BalanceRenamed(createBalance.balanceId(),
+		generatedEvents.add(new BalanceCreated(createBalance.balanceGuid()));
+		generatedEvents.add(new BalanceRenamed(createBalance.balanceGuid(),
 				createBalance.balanceName()));
 		return generatedEvents;
 	}
 
 	public List<BalanceEvent> handle(CreateEntry createEntry) {
 		List<BalanceEvent> generatedEvents = new ArrayList<>();
-		generatedEvents.add(new BalanceEntryCreated(createEntry.balanceId(),
+		generatedEvents.add(new BalanceEntryCreated(createEntry.balanceGuid(),
 				IdGenerator.generateId(), createEntry.description(),
 				createEntry.creationDate(), createEntry.amount()));
 		return generatedEvents;
@@ -163,7 +163,7 @@ public class Balance {
 
 	public List<BalanceEvent> handle(UpdateBalanceEntry updateEntry) {
 		List<BalanceEvent> generatedEvents = new ArrayList<>();
-		generatedEvents.add(new BalanceEntryUpdated(updateEntry.balanceId(),
+		generatedEvents.add(new BalanceEntryUpdated(updateEntry.balanceGuid(),
 				updateEntry.entryGuid(), updateEntry.entryDescription(),
 				updateEntry.createdAt(), updateEntry.amount()));
 		return generatedEvents;
@@ -171,7 +171,7 @@ public class Balance {
 
 	public List<BalanceEvent> handle(DeleteEntry deleteEntry) {
 		List<BalanceEvent> generatedEvents = new ArrayList<>();
-		generatedEvents.add(new BalanceEntryDeleted(deleteEntry.balanceId(),
+		generatedEvents.add(new BalanceEntryDeleted(deleteEntry.balanceGuid(),
 				deleteEntry.entryGuid()));
 		return generatedEvents;
 	}
@@ -179,7 +179,7 @@ public class Balance {
 	public List<BalanceEvent> handle(DeleteAllEntries deleteAllEntries) {
 		List<BalanceEvent> generatedEvents = new ArrayList<>();
 		for (BalanceEntry entry : this.entries) {
-			generatedEvents.add(new BalanceEntryDeleted(id(), entry.guid()));
+			generatedEvents.add(new BalanceEntryDeleted(guid(), entry.guid()));
 		}
 		return generatedEvents;
 	}
@@ -190,7 +190,7 @@ public class Balance {
 	}
 
 	public Balance handle(BalanceCreated balanceCreatedEvent) {
-		this.assignId(balanceCreatedEvent.balanceId());
+		this.assignGuid(balanceCreatedEvent.balanceGuid());
 		return this;
 	}
 

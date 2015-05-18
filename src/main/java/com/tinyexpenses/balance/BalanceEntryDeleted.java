@@ -4,8 +4,8 @@ class BalanceEntryDeleted extends BalanceEvent {
 
 	private String entryGuid;
 
-	BalanceEntryDeleted(long balanceId, String entryGuid) {
-		super(balanceId);
+	BalanceEntryDeleted(String balanceGuid, String entryGuid) {
+		super(balanceGuid);
 		this.entryGuid = entryGuid;
 	}
 

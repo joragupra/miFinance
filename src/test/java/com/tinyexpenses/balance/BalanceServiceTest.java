@@ -20,11 +20,11 @@ public class BalanceServiceTest {
 	public void testOpenNewBalance() {
 		final String balanceName = "General ledger";
 
-		final long balanceId = service.openNewBalance(balanceName);
+		final String balanceGuid = service.openNewBalance(balanceName);
 
-		Balance balance = service.retrieveBalance(balanceId);
+		Balance balance = service.retrieveBalance(balanceGuid);
 
-		assertEquals(balanceId, balance.id());
+		assertEquals(balanceGuid, balance.guid());
 		assertEquals(balanceName, balance.name());
 	}
 
@@ -33,12 +33,12 @@ public class BalanceServiceTest {
 		final String entryDescription = "Dinner with friends";
 		final Date entryDate = new Date();
 		final long entryAmountCents = 2500L;
-		final long balanceId = service.openNewBalance("General ledger");
+		final String balanceGuid = service.openNewBalance("General ledger");
 
-		service.addEntry(balanceId, entryDescription, entryDate,
+		service.addEntry(balanceGuid, entryDescription, entryDate,
 				entryAmountCents);
 
-		Balance balance = service.retrieveBalance(balanceId);
+		Balance balance = service.retrieveBalance(balanceGuid);
 
 		assertEquals(1, balance.entries().size());
 		assertEquals(entryDescription, balance.entries().get(0).description());
@@ -51,15 +51,15 @@ public class BalanceServiceTest {
 	public void testUpdateEntry() {
 		final String modifiedEntryDescription = "Lunch with friends";
 		final long modifiedAmountCents = 1895L;
-		final long balanceId = service.openNewBalance("General ledger");
-		service.addEntry(balanceId, "Dinner with friends", new Date(), 2500L);
-		final String entryGuid = service.retrieveBalance(balanceId).entries()
+		final String balanceGuid = service.openNewBalance("General ledger");
+		service.addEntry(balanceGuid, "Dinner with friends", new Date(), 2500L);
+		final String entryGuid = service.retrieveBalance(balanceGuid).entries()
 				.get(0).guid();
 
-		service.updateEntry(balanceId, entryGuid, modifiedEntryDescription,
+		service.updateEntry(balanceGuid, entryGuid, modifiedEntryDescription,
 				new Date(), modifiedAmountCents);
 
-		Balance balance = service.retrieveBalance(balanceId);
+		Balance balance = service.retrieveBalance(balanceGuid);
 
 		assertEquals(1, balance.entries().size());
 		assertEquals(modifiedEntryDescription, balance.entries().get(0)
@@ -70,28 +70,28 @@ public class BalanceServiceTest {
 
 	@Test
 	public void testDeleteEntry() {
-		final long balanceId = service.openNewBalance("General ledger");
-		service.addEntry(balanceId, "Dinner with friends", new Date(), 2500L);
-		final String entryGuid = service.retrieveBalance(balanceId).entries()
+		final String balanceGuid = service.openNewBalance("General ledger");
+		service.addEntry(balanceGuid, "Dinner with friends", new Date(), 2500L);
+		final String entryGuid = service.retrieveBalance(balanceGuid).entries()
 				.get(0).guid();
 
-		service.deleteEntry(balanceId, entryGuid);
+		service.deleteEntry(balanceGuid, entryGuid);
 
-		Balance balance = service.retrieveBalance(balanceId);
+		Balance balance = service.retrieveBalance(balanceGuid);
 
 		assertEquals(0, balance.entries().size());
 	}
 
 	@Test
 	public void testDeleteAllEntries() {
-		final long balanceId = service.openNewBalance("General ledger");
-		service.addEntry(balanceId, "Dinner with friends", new Date(), 2500L);
-		service.addEntry(balanceId, "Lunch at work", new Date(), 1250L);
-		service.addEntry(balanceId, "Magazine", new Date(), 490L);
+		final String balanceGuid = service.openNewBalance("General ledger");
+		service.addEntry(balanceGuid, "Dinner with friends", new Date(), 2500L);
+		service.addEntry(balanceGuid, "Lunch at work", new Date(), 1250L);
+		service.addEntry(balanceGuid, "Magazine", new Date(), 490L);
 
-		service.deleteAllEntries(balanceId);
+		service.deleteAllEntries(balanceGuid);
 
-		Balance balance = service.retrieveBalance(balanceId);
+		Balance balance = service.retrieveBalance(balanceGuid);
 
 		assertEquals(0, balance.entries().size());
 	}

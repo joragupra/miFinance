@@ -4,8 +4,8 @@ class BalanceRenamed extends BalanceEvent {
 
 	private String name;
 
-	BalanceRenamed(long balanceId, String name) {
-		super(balanceId);
+	BalanceRenamed(String balanceGuid, String name) {
+		super(balanceGuid);
 		this.name = name;
 	}
 

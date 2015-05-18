@@ -1,16 +1,17 @@
 package com.tinyexpenses.balance;
 
+import java.util.Date;
 import java.util.List;
 
 class CreateEntry extends BalanceCommand {
 
 	private String description;
-	private java.util.Date creationDate;
+	private Date creationDate;
 	private Money amount;
 
-	CreateEntry(long balanceId, String description,
-			java.util.Date creationDate, Money amount) {
-		super(balanceId);
+	CreateEntry(String balanceGuid, String description, Date creationDate,
+			Money amount) {
+		super(balanceGuid);
 		this.description = description;
 		this.creationDate = creationDate;
 		this.amount = amount;
@@ -20,7 +21,7 @@ class CreateEntry extends BalanceCommand {
 		return this.description;
 	}
 
-	java.util.Date creationDate() {
+	Date creationDate() {
 		return this.creationDate;
 	}
 

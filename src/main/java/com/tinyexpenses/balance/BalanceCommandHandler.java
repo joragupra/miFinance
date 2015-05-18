@@ -14,9 +14,9 @@ class BalanceCommandHandler {
 	}
 
 	void handle(BalanceCommand command) {
-		final long balanceId = command.balanceId();
+		final String balanceGuid = command.balanceGuid();
 
-		List<BalanceEvent> previousEvents = eventStream.events(balanceId);
+		List<BalanceEvent> previousEvents = eventStream.events(balanceGuid);
 
 		Balance balance = factory.createEmptyBalance();
 		balance.loadFromEvents(previousEvents);
@@ -25,7 +25,7 @@ class BalanceCommandHandler {
 
 		for (BalanceEvent event : newEvents) {
 			balance.handle(event);
-			eventStream.registerEvent(balanceId, event);
+			eventStream.registerEvent(balanceGuid, event);
 		}
 	}
 

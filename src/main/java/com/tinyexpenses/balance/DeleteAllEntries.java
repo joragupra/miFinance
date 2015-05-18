@@ -4,8 +4,8 @@ import java.util.List;
 
 class DeleteAllEntries extends BalanceCommand {
 
-	DeleteAllEntries(long balanceId) {
-		super(balanceId);
+	DeleteAllEntries(String balanceGuid) {
+		super(balanceGuid);
 	}
 
 	List<BalanceEvent> execute(Balance balance) {

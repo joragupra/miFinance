@@ -22,38 +22,38 @@ public class BalanceCommandHandlerTest {
 
 	@Test
 	public void testHandleCommand_PreviousEventsAreLoaded() {
-		final long balanceId = 8907L;
+		final String balanceGuid = "8907";
 		final String balanceName = "My new balance";
 		List<BalanceEvent> previousEvents = new ArrayList<>();
-		when(eventStream.events(balanceId)).thenReturn(previousEvents);
+		when(eventStream.events(balanceGuid)).thenReturn(previousEvents);
 
-		commandHandler.handle(new BalanceCommandStub(balanceId));
+		commandHandler.handle(new BalanceCommandStub(balanceGuid));
 
 		verify(mockBalance, times(1)).loadFromEvents(previousEvents);
 	}
 
 	@Test
 	public void testHandleCommand_NewEventsAreHandledByBalance() {
-		final long balanceId = 55342L;
+		final String balanceGuid = "55342";
 		final String balanceName = "My new balance";
 		List<BalanceEvent> previousEvents = new ArrayList<>();
-		when(eventStream.events(balanceId)).thenReturn(previousEvents);
+		when(eventStream.events(balanceGuid)).thenReturn(previousEvents);
 
-		commandHandler.handle(new BalanceCommandStub(balanceId));
+		commandHandler.handle(new BalanceCommandStub(balanceGuid));
 
 		verify(mockBalance, times(1)).handle(any(BalanceEventStub.class));
 	}
 
 	@Test
 	public void testHandleCommand_NewEventsAreRegistered() {
-		final long balanceId = 55342L;
+		final String balanceGuid = "55342";
 		final String balanceName = "My new balance";
 		List<BalanceEvent> previousEvents = new ArrayList<>();
-		when(eventStream.events(balanceId)).thenReturn(previousEvents);
+		when(eventStream.events(balanceGuid)).thenReturn(previousEvents);
 
-		commandHandler.handle(new BalanceCommandStub(balanceId));
+		commandHandler.handle(new BalanceCommandStub(balanceGuid));
 
-		verify(eventStream, times(1)).registerEvent(eq(balanceId),
+		verify(eventStream, times(1)).registerEvent(eq(balanceGuid),
 				any(BalanceEventStub.class));
 	}
 
@@ -66,13 +66,13 @@ public class BalanceCommandHandlerTest {
 
 	private class BalanceCommandStub extends BalanceCommand {
 
-		private BalanceCommandStub(long balanceId) {
-			super(balanceId);
+		private BalanceCommandStub(String balanceGuid) {
+			super(balanceGuid);
 		}
 
 		List<BalanceEvent> execute(Balance balance) {
 			List<BalanceEvent> generatedEvents = new ArrayList<>();
-			generatedEvents.add(new BalanceEventStub(balance.id()));
+			generatedEvents.add(new BalanceEventStub(balance.guid()));
 			return generatedEvents;
 		}
 
@@ -80,8 +80,8 @@ public class BalanceCommandHandlerTest {
 
 	private class BalanceEventStub extends BalanceEvent {
 
-		BalanceEventStub(long balanceId) {
-			super(balanceId);
+		BalanceEventStub(String balanceGuid) {
+			super(balanceGuid);
 		}
 
 		protected void apply(Balance balance) {

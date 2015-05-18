@@ -2,14 +2,14 @@ package com.tinyexpenses.balance;
 
 abstract class BalanceEvent {
 
-	protected long balanceId;
+	protected String balanceGuid;
 
-	protected BalanceEvent(long balanceId) {
-		this.balanceId = balanceId;
+	protected BalanceEvent(String balanceGuid) {
+		this.balanceGuid = balanceGuid;
 	}
 
-	protected long balanceId() {
-		return this.balanceId;
+	protected String balanceGuid() {
+		return this.balanceGuid;
 	}
 
 	protected abstract void apply(Balance balance);

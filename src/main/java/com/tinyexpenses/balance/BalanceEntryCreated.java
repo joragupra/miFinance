@@ -7,9 +7,9 @@ class BalanceEntryCreated extends BalanceEvent {
 	private java.util.Date creationDate;
 	private Money amount;
 
-	BalanceEntryCreated(long balanceId, String entryGuid,
+	BalanceEntryCreated(String balanceGuid, String entryGuid,
 			String entryDescription, java.util.Date createdAt, Money amount) {
-		super(balanceId);
+		super(balanceGuid);
 		this.entryGuid = entryGuid;
 		this.entryDescription = entryDescription;
 		this.creationDate = createdAt;

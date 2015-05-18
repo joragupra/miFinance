@@ -9,9 +9,9 @@ class UpdateBalanceEntry extends BalanceCommand {
 	private java.util.Date createdAt;
 	private Money amount;
 
-	UpdateBalanceEntry(long balanceId, String entryGuid,
+	UpdateBalanceEntry(String balanceGuid, String entryGuid,
 			String entryDescription, java.util.Date createdAt, Money amount) {
-		super(balanceId);
+		super(balanceGuid);
 		this.entryGuid = entryGuid;
 		this.entryDescription = entryDescription;
 		this.createdAt = createdAt;

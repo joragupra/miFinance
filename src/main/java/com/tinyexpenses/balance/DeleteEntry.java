@@ -6,8 +6,8 @@ class DeleteEntry extends BalanceCommand {
 
 	private String entryGuid;
 
-	DeleteEntry(long balanceId, String entryGuid) {
-		super(balanceId);
+	DeleteEntry(String balanceGuid, String entryGuid) {
+		super(balanceGuid);
 		this.entryGuid = entryGuid;
 	}
 

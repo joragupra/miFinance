@@ -10,8 +10,6 @@ public class BalanceService {
 	private BalanceEventStream eventStream;
 	private BalanceCommandHandler commandHandler;
 
-	private long nextBalanceId = 1;
-
 	public BalanceService(EventStore<BalanceEvent> eventStore) {
 		factory = new BalanceFactory();
 		eventStream = new BalanceEventStream(eventStore);
@@ -19,28 +17,25 @@ public class BalanceService {
 	}
 
 	public Balance retrieveBalance() {
-
 		return factory.createEmptyBalance();
-
 	}
 
-	public Balance retrieveBalance(long balanceId) {
+	public Balance retrieveBalance(String balanceGuid) {
 		Balance balance = factory.createEmptyBalance();
-		balance.loadFromEvents(eventStream.events(balanceId));
+		balance.loadFromEvents(eventStream.events(balanceGuid));
 		return balance;
 	}
 
-	// TODO - balanceId should be changed to String
-	public long openNewBalance(String balanceName) {
-		final long balanceId = nextBalanceId++;
-		CreateBalance command = new CreateBalance(balanceId, balanceName);
+	public String openNewBalance(String balanceName) {
+		final String balanceGuid = IdGenerator.generateId();
+		CreateBalance command = new CreateBalance(balanceGuid, balanceName);
 		commandHandler.handle(command);
-		return balanceId;
+		return balanceGuid;
 	}
 
-	public void addEntry(long balanceId, String description, Date recordedAt,
-			long amountCents) {
-		CreateEntry command = new CreateEntry(balanceId, description,
+	public void addEntry(String balanceGuid, String description,
+			Date recordedAt, long amountCents) {
+		CreateEntry command = new CreateEntry(balanceGuid, description,
 				recordedAt, Money.fromCents(amountCents));
 		commandHandler.handle(command);
 	}
@@ -51,9 +46,9 @@ public class BalanceService {
 				description, recordedAt, Money.fromCents(amountCents));
 	}
 
-	public void updateEntry(long balanceId, String balanceEntryGuid,
+	public void updateEntry(String balanceGuid, String balanceEntryGuid,
 			String description, Date recordedAt, long amountCents) {
-		UpdateBalanceEntry command = new UpdateBalanceEntry(balanceId,
+		UpdateBalanceEntry command = new UpdateBalanceEntry(balanceGuid,
 				balanceEntryGuid, description, recordedAt,
 				Money.fromCents(amountCents));
 		commandHandler.handle(command);
@@ -65,8 +60,8 @@ public class BalanceService {
 				Money.fromCents(amountCents));
 	}
 
-	public void deleteEntry(long balanceId, String balanceEntryGuid) {
-		DeleteEntry command = new DeleteEntry(balanceId, balanceEntryGuid);
+	public void deleteEntry(String balanceGuid, String balanceEntryGuid) {
+		DeleteEntry command = new DeleteEntry(balanceGuid, balanceEntryGuid);
 		commandHandler.handle(command);
 	}
 
@@ -74,8 +69,8 @@ public class BalanceService {
 		boolean success = balance.deleteEntry(balanceEntryGuid);
 	}
 
-	public void deleteAllEntries(long balanceId) {
-		DeleteAllEntries command = new DeleteAllEntries(balanceId);
+	public void deleteAllEntries(String balanceGuid) {
+		DeleteAllEntries command = new DeleteAllEntries(balanceGuid);
 		commandHandler.handle(command);
 	}
 

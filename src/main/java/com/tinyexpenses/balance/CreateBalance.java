@@ -6,8 +6,8 @@ class CreateBalance extends BalanceCommand {
 
 	private String balanceName;
 
-	public CreateBalance(long balanceId, String balanceName) {
-		super(balanceId);
+	public CreateBalance(String balanceGuid, String balanceName) {
+		super(balanceGuid);
 		this.balanceName = balanceName;
 	}
 
