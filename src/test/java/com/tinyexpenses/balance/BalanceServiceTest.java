@@ -9,15 +9,11 @@ import static org.junit.Assert.*;
 public class BalanceServiceTest {
 
 	private BalanceService service;
+	private InMemoryEventStore eventStore = new InMemoryEventStore();
 
 	@Before
 	public void setUp() {
-		service = new BalanceService();
-	}
-
-	@After
-	public void tearDown() {
-		BalanceEventStream.getInstance().forgetAllEvents();
+		service = new BalanceService(eventStore);
 	}
 
 	@Test

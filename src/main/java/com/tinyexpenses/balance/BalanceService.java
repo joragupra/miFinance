@@ -12,21 +12,10 @@ public class BalanceService {
 
 	private long nextBalanceId = 1;
 
-	public BalanceService() {
-
-		this(new ArrayList<BalanceEvent>());
-
-	}
-
-	public BalanceService(List<BalanceEvent> events) {
+	public BalanceService(EventStore<BalanceEvent> eventStore) {
 		factory = new BalanceFactory();
-		initializeEventStream(events);
+		eventStream = new BalanceEventStream(eventStore);
 		commandHandler = new BalanceCommandHandler(factory, eventStream);
-	}
-
-	private void initializeEventStream(List<BalanceEvent> events) {
-		eventStream = BalanceEventStream.getInstance();
-		eventStream.initialize(events);
 	}
 
 	public Balance retrieveBalance() {
