@@ -1,6 +1,6 @@
 package com.tinyexpenses.balance;
 
-abstract class BalanceEvent {
+public abstract class BalanceEvent {
 
 	protected String balanceGuid;
 

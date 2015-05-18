@@ -40,12 +40,6 @@ public class BalanceService {
 		commandHandler.handle(command);
 	}
 
-	public void addEntry(Balance balance, String description, Date recordedAt,
-			long amountCents) {
-		BalanceEntry balanceEntry = balance.addEntry(IdGenerator.generateId(),
-				description, recordedAt, Money.fromCents(amountCents));
-	}
-
 	public void updateEntry(String balanceGuid, String balanceEntryGuid,
 			String description, Date recordedAt, long amountCents) {
 		UpdateBalanceEntry command = new UpdateBalanceEntry(balanceGuid,
@@ -54,28 +48,14 @@ public class BalanceService {
 		commandHandler.handle(command);
 	}
 
-	public void updateEntry(Balance balance, String balanceEntryGuid,
-			String description, Date recordedAt, long amountCents) {
-		balance.updateEntry(balanceEntryGuid, description, recordedAt,
-				Money.fromCents(amountCents));
-	}
-
 	public void deleteEntry(String balanceGuid, String balanceEntryGuid) {
 		DeleteEntry command = new DeleteEntry(balanceGuid, balanceEntryGuid);
 		commandHandler.handle(command);
 	}
 
-	public void deleteEntry(Balance balance, String balanceEntryGuid) {
-		boolean success = balance.deleteEntry(balanceEntryGuid);
-	}
-
 	public void deleteAllEntries(String balanceGuid) {
 		DeleteAllEntries command = new DeleteAllEntries(balanceGuid);
 		commandHandler.handle(command);
-	}
-
-	public void deleteAllEntries(Balance balance) {
-		boolean success = balance.deleteAllEntries();
 	}
 
 }
