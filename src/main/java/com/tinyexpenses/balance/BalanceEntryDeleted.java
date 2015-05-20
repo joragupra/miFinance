@@ -1,15 +1,15 @@
 package com.tinyexpenses.balance;
 
-class BalanceEntryDeleted extends BalanceEvent {
+public class BalanceEntryDeleted extends BalanceEvent {
 
 	private String entryGuid;
 
-	BalanceEntryDeleted(String balanceGuid, String entryGuid) {
+	public BalanceEntryDeleted(String balanceGuid, String entryGuid) {
 		super(balanceGuid);
 		this.entryGuid = entryGuid;
 	}
 
-	String entryGuid() {
+	public String entryGuid() {
 		return this.entryGuid;
 	}
 

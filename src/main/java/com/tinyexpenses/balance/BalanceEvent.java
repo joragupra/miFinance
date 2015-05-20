@@ -8,7 +8,7 @@ public abstract class BalanceEvent {
 		this.balanceGuid = balanceGuid;
 	}
 
-	protected String balanceGuid() {
+	public String balanceGuid() {
 		return this.balanceGuid;
 	}
 

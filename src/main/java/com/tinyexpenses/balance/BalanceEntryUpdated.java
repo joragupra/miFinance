@@ -1,13 +1,13 @@
 package com.tinyexpenses.balance;
 
-class BalanceEntryUpdated extends BalanceEvent {
+public class BalanceEntryUpdated extends BalanceEvent {
 
 	private String entryGuid;
 	private String entryDescription;
 	private java.util.Date creationDate;
 	private Money amount;
 
-	BalanceEntryUpdated(String balanceGuid, String entryGuid,
+	public BalanceEntryUpdated(String balanceGuid, String entryGuid,
 			String entryDescription, java.util.Date createdAt, Money amount) {
 		super(balanceGuid);
 		this.entryGuid = entryGuid;
@@ -16,19 +16,19 @@ class BalanceEntryUpdated extends BalanceEvent {
 		this.amount = amount;
 	}
 
-	String entryGuid() {
+	public String entryGuid() {
 		return this.entryGuid;
 	}
 
-	String entryDescription() {
+	public String entryDescription() {
 		return this.entryDescription;
 	}
 
-	java.util.Date creationDate() {
+	public java.util.Date creationDate() {
 		return this.creationDate;
 	}
 
-	Money amount() {
+	public Money amount() {
 		return this.amount;
 	}
 

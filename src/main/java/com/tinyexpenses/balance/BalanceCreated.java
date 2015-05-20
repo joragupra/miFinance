@@ -1,8 +1,8 @@
 package com.tinyexpenses.balance;
 
-class BalanceCreated extends BalanceEvent {
+public class BalanceCreated extends BalanceEvent {
 
-	BalanceCreated(String balanceGuid) {
+	public BalanceCreated(String balanceGuid) {
 		super(balanceGuid);
 	}
 
