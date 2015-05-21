@@ -1,19 +1,19 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceCreated;
-import com.tinyexpenses.balance.BalanceRenamed;
-
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import java.text.SimpleDateFormat;
 
 import static com.tinyexpenses.balance.persistence.BalanceEventStoreContract.DBEventStore.*;
 
+/**
+ * Visitor for balance event saving operation.
+ */
 class BalanceEventSavingHandler {
 
     private SQLiteDatabase writableDb;
 
-    BalanceEventSavingHandler(SQLiteDatabase readableDb) {
+    BalanceEventSavingHandler(SQLiteDatabase writableDb) {
         this.writableDb = writableDb;
     }
 
