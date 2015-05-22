@@ -8,7 +8,7 @@ class PersistentBalanceEntryCreated implements PersistentBalanceEvent<BalanceEnt
 
     private BalanceEntryCreated event;
 
-    private static final String EVENT_TYPE = "BALANCE_ENTRY_CREATED";
+    static final String EVENT_TYPE = "BALANCE_ENTRY_CREATED";
 
     PersistentBalanceEntryCreated(BalanceEntryCreated event) {
         this.event = event;

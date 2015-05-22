@@ -8,7 +8,7 @@ class PersistentBalanceRenamed implements PersistentBalanceEvent<BalanceRenamed>
 
     private BalanceRenamed event;
 
-    private static final String EVENT_TYPE = "BALANCE_RENAMED";
+    static final String EVENT_TYPE = "BALANCE_RENAMED";
 
     PersistentBalanceRenamed(BalanceRenamed event) {
         this.event = event;

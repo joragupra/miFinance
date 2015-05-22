@@ -8,7 +8,7 @@ class PersistentBalanceEntryDeleted implements PersistentBalanceEvent<BalanceEnt
 
     private BalanceEntryDeleted event;
 
-    private static final String EVENT_TYPE = "BALANCE_ENTRY_DELETED";
+    static final String EVENT_TYPE = "BALANCE_ENTRY_DELETED";
 
     PersistentBalanceEntryDeleted(BalanceEntryDeleted event) {
         this.event = event;
