@@ -45,6 +45,11 @@
                 <artifactId>maven-java-formatter-plugin</artifactId>
                 <version>0.4</version>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+            </plugin>
         </plugins>
     </pluginManagement>
     <plugins>
@@ -64,6 +69,29 @@
                 <compilerTargetPlatform>${java.version}</compilerTargetPlatform>
             </configuration>
         </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+            <configuration>
+                <check>
+                    <branchRate>80</branchRate>
+                    <lineRate>80</lineRate>
+                    <totalBranchRate>80</totalBranchRate>
+                    <totalLineRate>80</totalLineRate>
+                    <packageLineRate>80</packageLineRate>
+                    <packageBranchRate>80</packageBranchRate>
+                </check>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
+
+  <reporting>
+      <plugins>
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>cobertura-maven-plugin</artifactId>
+          </plugin>
+      </plugins>
+  </reporting>
 </project>
