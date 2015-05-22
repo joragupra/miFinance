@@ -28,6 +28,12 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 		savingHandler = new BalanceEventSavingHandler(writableDb);
 	}
 
+	BalanceEventStore(SQLiteDatabase readableDb, BalanceEventLoadingHandler loadingHandler, BalanceEventSavingHandler savingHandler) {
+		this.readableDb = readableDb;
+		this.loadingHandler = loadingHandler;
+		this.savingHandler = savingHandler;
+	}
+
 	public List<BalanceEvent> loadEvents(String aggregateId) {
 		List<BalanceEvent> events = new ArrayList<>();
 		Cursor c = readableDb.rawQuery("select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME, null);
