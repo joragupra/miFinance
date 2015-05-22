@@ -10,6 +10,7 @@ class BalanceFactory {
 
 	}
 
+	//TODO - remove as it is useless from now on
 	Balance createBalance(List<BalanceEntry> entries) {
 
 		Balance balance = new Balance();
