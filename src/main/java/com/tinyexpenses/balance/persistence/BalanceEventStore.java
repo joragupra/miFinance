@@ -27,7 +27,7 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 		loadingHandler = new BalanceEventLoadingHandler(readableDb);
 		savingHandler = new BalanceEventSavingHandler(writableDb);
 	}
-	
+
 	void setSavingHandler(BalanceEventSavingHandler savingHandler) {
 		this.savingHandler = savingHandler;
 	}
@@ -43,6 +43,7 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 
 				int offset = 3;
 				Map<String, String> keyValue = new HashMap();
+				keyValue.put(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID, aggregateGuid);
 				//TODO - make this beautiful
 				for (int j = 0; j < 7; j += 2) {
 					String key = c.getString(offset + j);
