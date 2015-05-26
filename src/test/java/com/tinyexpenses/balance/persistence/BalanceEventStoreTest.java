@@ -1,5 +1,6 @@
 package com.tinyexpenses.balance.persistence;
 
+import com.tinyexpenses.balance.BalanceEvent;
 import com.tinyexpenses.balance.BalanceCreated;
 import com.tinyexpenses.balance.BalanceRenamed;
 import com.tinyexpenses.balance.BalanceEntryCreated;
@@ -8,23 +9,51 @@ import com.tinyexpenses.balance.BalanceEntryUpdated;
 import com.tinyexpenses.balance.Money;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
 
+import org.junit.runner.*;
 import org.junit.*;
 import org.mockito.ArgumentMatcher;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.api.mockito.PowerMockito;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SQLiteDatabase.class})
 public class BalanceEventStoreTest {
 
 	private BalanceEventStore eventStore;
 
 	private BalanceEventSavingHandler savingHandler;
 
+	private static final String TEST_BALANCE_ID = "565fd67e99c007d";
+	private SQLiteDatabase mockDatabase;
+	private Cursor singleResultCursor;
+
 	@Before
 	public void setUp() {
 		this.savingHandler = mock(BalanceEventSavingHandler.class);
-		this.eventStore = new BalanceEventStore(null, null, savingHandler);
+		this.mockDatabase = PowerMockito.mock(SQLiteDatabase.class);
+		this.singleResultCursor = prepareDatabaseToReturnCursor();
+		this.eventStore = new BalanceEventStore(null, mockDatabase);
+		this.eventStore.setSavingHandler(savingHandler);
+	}
+
+	private Cursor prepareDatabaseToReturnCursor() {
+		final String query = "select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME;
+		Cursor cursor = mock(Cursor.class);
+		when(cursor.getCount()).thenReturn(1);
+		when(cursor.move(1)).thenReturn(true);
+		when(mockDatabase.rawQuery(query, null)).thenReturn(cursor);
+		return cursor;
 	}
 
 	@Test
@@ -145,6 +174,24 @@ public class BalanceEventStoreTest {
 			}
 		}
 		);
+	}
+
+	@Test
+	public void testLoadBalanceCreatedEvent() {
+		prepareBalanceCreatedRowReturned(singleResultCursor);
+
+		List<BalanceEvent> events = eventStore.loadEvents(TEST_BALANCE_ID);
+
+		assertEquals(1, events.size());
+		assertEquals(BalanceCreated.class, events.get(0).getClass());
+		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
+	}
+
+
+
+	private void prepareBalanceCreatedRowReturned(Cursor mockedCursor) {
+		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
+		when(mockedCursor.getString(2)).thenReturn("BALANCE_CREATED");
 	}
 
 }

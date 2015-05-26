@@ -27,10 +27,8 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 		loadingHandler = new BalanceEventLoadingHandler(readableDb);
 		savingHandler = new BalanceEventSavingHandler(writableDb);
 	}
-
-	BalanceEventStore(SQLiteDatabase readableDb, BalanceEventLoadingHandler loadingHandler, BalanceEventSavingHandler savingHandler) {
-		this.readableDb = readableDb;
-		this.loadingHandler = loadingHandler;
+	
+	void setSavingHandler(BalanceEventSavingHandler savingHandler) {
 		this.savingHandler = savingHandler;
 	}
 
