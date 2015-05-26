@@ -187,11 +187,29 @@ public class BalanceEventStoreTest {
 		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
 	}
 
+	@Test
+	public void testLoadBalanceRenamedEvent() {
+		final String newBalanceName = "General ledger";
+		prepareBalanceRenamedRowReturned(singleResultCursor, newBalanceName);
 
+		List<BalanceEvent> events = eventStore.loadEvents(TEST_BALANCE_ID);
+
+		assertEquals(1, events.size());
+		assertEquals(BalanceRenamed.class, events.get(0).getClass());
+		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
+		assertEquals(newBalanceName, ((BalanceRenamed) events.get(0)).name());
+	}
 
 	private void prepareBalanceCreatedRowReturned(Cursor mockedCursor) {
 		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
 		when(mockedCursor.getString(2)).thenReturn("BALANCE_CREATED");
+	}
+
+	private void prepareBalanceRenamedRowReturned(Cursor mockedCursor, String newBalanceName) {
+		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
+		when(mockedCursor.getString(2)).thenReturn("BALANCE_RENAMED");
+		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceRenamed.NAME_COLUMN);
+		when(mockedCursor.getString(4)).thenReturn(newBalanceName);
 	}
 
 }

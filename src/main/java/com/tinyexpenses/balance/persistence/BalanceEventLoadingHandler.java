@@ -28,6 +28,10 @@ class BalanceEventLoadingHandler {
         return new BalanceCreated(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID));
     }
 
+    BalanceRenamed load(RawBalanceRenamed rawEvent) {
+        return new BalanceRenamed(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID), rawEvent.valueInColumn(PersistentBalanceRenamed.NAME_COLUMN));
+    }
+
     BalanceEntryCreated load(RawBalanceEntryCreated rawEvent) {
         try {
             return new BalanceEntryCreated(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID), rawEvent.valueInColumn(COLUMN_NAME_DATA_01), rawEvent.valueInColumn(COLUMN_NAME_DATA_02), new SimpleDateFormat("yyyy.MM.dd").parse(rawEvent.valueInColumn(COLUMN_NAME_DATA_03)), Money.fromCents(Long.parseLong(rawEvent.valueInColumn(COLUMN_NAME_DATA_04))));
@@ -46,10 +50,6 @@ class BalanceEventLoadingHandler {
         } catch(ParseException e) {
             return null;
         }
-    }
-
-    BalanceRenamed load(RawBalanceRenamed rawEvent) {
-        return new BalanceRenamed(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID), rawEvent.valueInColumn(COLUMN_NAME_DATA_01));
     }
 
 }

@@ -28,7 +28,7 @@ class BalanceEventSavingHandler {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_AGGREGATE_ID, persistentEvent.event().balanceGuid());
         values.put(COLUMN_NAME_EVENT_TYPE, persistentEvent.eventType());
-        values.put(COLUMN_NAME_KEY_01, "name");
+        values.put(COLUMN_NAME_KEY_01, PersistentBalanceRenamed.NAME_COLUMN);
         values.put(COLUMN_NAME_DATA_01, persistentEvent.event().name());
         writableDb.insert(TABLE_NAME, null, values);
     }

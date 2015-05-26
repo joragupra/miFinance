@@ -10,6 +10,8 @@ class PersistentBalanceRenamed implements PersistentBalanceEvent<BalanceRenamed>
 
     static final String EVENT_TYPE = "BALANCE_RENAMED";
 
+    static final String NAME_COLUMN = "name";
+
     PersistentBalanceRenamed(BalanceRenamed event) {
         this.event = event;
     }
