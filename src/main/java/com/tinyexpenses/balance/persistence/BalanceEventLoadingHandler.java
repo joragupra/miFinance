@@ -41,7 +41,7 @@ class BalanceEventLoadingHandler {
     }
 
     BalanceEntryDeleted load(RawBalanceEntryDeleted rawEvent) {
-        return new BalanceEntryDeleted(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID), rawEvent.valueInColumn(COLUMN_NAME_DATA_01));
+        return new BalanceEntryDeleted(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID), rawEvent.valueInColumn(PersistentBalanceEntryDeleted.ENTRY_GUID_COLUMN));
     }
 
     BalanceEntryUpdated load(RawBalanceEntryUpdated rawEvent) {

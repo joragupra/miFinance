@@ -203,7 +203,6 @@ public class BalanceEventStoreTest {
 
 	@Test
 	public void testLoadBalanceEntryCreatedEvent() {
-		final String balanceGuid = "81f9e218c7c8a55fg";
 		final String balanceEntryGuid = "5cdf114fg14efd23";
 		final String balanceEntryDescription = "Dinner at Maxim's";
 		final Date balanceEntryDate = new Date();
@@ -224,8 +223,20 @@ public class BalanceEventStoreTest {
 	}
 
 	@Test
+	public void testLoadBalanceEntryDeletedEvent() {
+		final String balanceEntryGuid = "5cdf114fg14efd23";
+		prepareBalanceEntryDeletedRowReturned(singleResultCursor, balanceEntryGuid);
+
+		List<BalanceEvent> events = eventStore.loadEvents(TEST_BALANCE_ID);
+
+		assertEquals(1, events.size());
+		assertEquals(BalanceEntryDeleted.class, events.get(0).getClass());
+		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
+		assertEquals(balanceEntryGuid, ((BalanceEntryDeleted) events.get(0)).entryGuid());
+	}
+
+	@Test
 	public void testLoadBalanceEntryUpdatedEvent() {
-		final String balanceGuid = "81f9e218c7c8a55fg";
 		final String balanceEntryGuid = "5cdf114fg14efd23";
 		final String balanceEntryDescription = "Dinner at Maxim's modified";
 		final Date balanceEntryDate = new Date();
@@ -238,11 +249,6 @@ public class BalanceEventStoreTest {
 		assertEquals(BalanceEntryUpdated.class, events.get(0).getClass());
 		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
 		assertEquals(balanceEntryGuid, ((BalanceEntryUpdated) events.get(0)).entryGuid());
-		assertEquals(balanceEntryDescription, ((BalanceEntryUpdated) events.get(0)).entryDescription());
-		assertEquals(balanceEntryDate.getYear(), ((BalanceEntryUpdated) events.get(0)).creationDate().getYear());
-		assertEquals(balanceEntryDate.getMonth(), ((BalanceEntryUpdated) events.get(0)).creationDate().getMonth());
-		assertEquals(balanceEntryDate.getDay(), ((BalanceEntryUpdated) events.get(0)).creationDate().getDay());
-		assertEquals(balanceEntryAmount.cents(), ((BalanceEntryUpdated) events.get(0)).amount().cents());
 	}
 
 	private void prepareBalanceCreatedRowReturned(Cursor mockedCursor) {
@@ -268,6 +274,13 @@ public class BalanceEventStoreTest {
 		when(mockedCursor.getString(8)).thenReturn(new SimpleDateFormat("yyyy.MM.dd").format(newEntryDate));
 		when(mockedCursor.getString(9)).thenReturn(PersistentBalanceEntryCreated.AMOUNT_COLUMN);
 		when(mockedCursor.getString(10)).thenReturn(new Long(newEntryAmount.cents()).toString());
+	}
+
+	private void prepareBalanceEntryDeletedRowReturned(Cursor mockedCursor, String entryGuid) {
+		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
+		when(mockedCursor.getString(2)).thenReturn(PersistentBalanceEntryDeleted.EVENT_TYPE);
+		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceEntryDeleted.ENTRY_GUID_COLUMN);
+		when(mockedCursor.getString(4)).thenReturn(entryGuid);
 	}
 
 	private void prepareBalanceEntryUpdatedRowReturned(Cursor mockedCursor, String entryGuid, String entryDescription, Date entryDate, Money entryAmount) {

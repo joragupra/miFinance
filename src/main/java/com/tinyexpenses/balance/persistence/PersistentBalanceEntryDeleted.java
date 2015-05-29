@@ -10,6 +10,8 @@ class PersistentBalanceEntryDeleted implements PersistentBalanceEvent<BalanceEnt
 
     static final String EVENT_TYPE = "BALANCE_ENTRY_DELETED";
 
+    static final String ENTRY_GUID_COLUMN = "entryGuid";
+
     PersistentBalanceEntryDeleted(BalanceEntryDeleted event) {
         this.event = event;
     }
