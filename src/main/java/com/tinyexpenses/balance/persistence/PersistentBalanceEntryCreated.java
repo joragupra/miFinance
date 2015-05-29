@@ -10,6 +10,14 @@ class PersistentBalanceEntryCreated implements PersistentBalanceEvent<BalanceEnt
 
     static final String EVENT_TYPE = "BALANCE_ENTRY_CREATED";
 
+    static final String ENTRY_GUID_COLUMN = "entryGuid";
+
+    static final String DESCRIPTION_COLUMN = "description";
+
+    static final String DATE_COLUMN = "date";
+
+    static final String AMOUNT_COLUMN = "amount";
+
     PersistentBalanceEntryCreated(BalanceEntryCreated event) {
         this.event = event;
     }

@@ -14,8 +14,8 @@ import java.text.SimpleDateFormat;
 import static com.tinyexpenses.balance.persistence.BalanceEventStoreContract.DBEventStore.*;
 
 /**
-* Visitor for balance event loading operation.
-*/
+ * Visitor for balance event loading operation.
+ */
 class BalanceEventLoadingHandler {
 
     private SQLiteDatabase readableDb;
@@ -34,7 +34,7 @@ class BalanceEventLoadingHandler {
 
     BalanceEntryCreated load(RawBalanceEntryCreated rawEvent) {
         try {
-            return new BalanceEntryCreated(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID), rawEvent.valueInColumn(COLUMN_NAME_DATA_01), rawEvent.valueInColumn(COLUMN_NAME_DATA_02), new SimpleDateFormat("yyyy.MM.dd").parse(rawEvent.valueInColumn(COLUMN_NAME_DATA_03)), Money.fromCents(Long.parseLong(rawEvent.valueInColumn(COLUMN_NAME_DATA_04))));
+            return new BalanceEntryCreated(rawEvent.valueInColumn(COLUMN_NAME_AGGREGATE_ID), rawEvent.valueInColumn(PersistentBalanceEntryCreated.ENTRY_GUID_COLUMN), rawEvent.valueInColumn(PersistentBalanceEntryCreated.DESCRIPTION_COLUMN), new SimpleDateFormat("yyyy.MM.dd").parse(rawEvent.valueInColumn(PersistentBalanceEntryCreated.DATE_COLUMN)), Money.fromCents(Long.parseLong(rawEvent.valueInColumn(PersistentBalanceEntryCreated.AMOUNT_COLUMN))));
         } catch(ParseException e) {
             return null;
         }

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 
@@ -200,6 +201,28 @@ public class BalanceEventStoreTest {
 		assertEquals(newBalanceName, ((BalanceRenamed) events.get(0)).name());
 	}
 
+	@Test
+	public void testLoadBalanceEntryCreatedEvent() {
+		final String balanceGuid = "81f9e218c7c8a55fg";
+		final String balanceEntryGuid = "5cdf114fg14efd23";
+		final String balanceEntryDescription = "Dinner at Maxim's";
+		final Date balanceEntryDate = new Date();
+		final Money balanceEntryAmount = Money.fromCents(12845);
+		prepareBalanceEntryCreatedRowReturned(singleResultCursor, balanceEntryGuid, balanceEntryDescription, balanceEntryDate, balanceEntryAmount);
+
+		List<BalanceEvent> events = eventStore.loadEvents(TEST_BALANCE_ID);
+
+		assertEquals(1, events.size());
+		assertEquals(BalanceEntryCreated.class, events.get(0).getClass());
+		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
+		assertEquals(balanceEntryGuid, ((BalanceEntryCreated) events.get(0)).entryGuid());
+		assertEquals(balanceEntryDescription, ((BalanceEntryCreated) events.get(0)).entryDescription());
+		assertEquals(balanceEntryDate.getYear(), ((BalanceEntryCreated) events.get(0)).creationDate().getYear());
+		assertEquals(balanceEntryDate.getMonth(), ((BalanceEntryCreated) events.get(0)).creationDate().getMonth());
+		assertEquals(balanceEntryDate.getDay(), ((BalanceEntryCreated) events.get(0)).creationDate().getDay());
+		assertEquals(balanceEntryAmount.cents(), ((BalanceEntryCreated) events.get(0)).amount().cents());
+	}
+
 	private void prepareBalanceCreatedRowReturned(Cursor mockedCursor) {
 		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
 		when(mockedCursor.getString(2)).thenReturn("BALANCE_CREATED");
@@ -207,9 +230,22 @@ public class BalanceEventStoreTest {
 
 	private void prepareBalanceRenamedRowReturned(Cursor mockedCursor, String newBalanceName) {
 		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
-		when(mockedCursor.getString(2)).thenReturn("BALANCE_RENAMED");
+		when(mockedCursor.getString(2)).thenReturn(PersistentBalanceRenamed.EVENT_TYPE);
 		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceRenamed.NAME_COLUMN);
 		when(mockedCursor.getString(4)).thenReturn(newBalanceName);
+	}
+
+	private void prepareBalanceEntryCreatedRowReturned(Cursor mockedCursor, String newEnytrGuid, String newEntryDescription, Date newEntryDate, Money newEntryAmount) {
+		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
+		when(mockedCursor.getString(2)).thenReturn(PersistentBalanceEntryCreated.EVENT_TYPE);
+		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceEntryCreated.ENTRY_GUID_COLUMN);
+		when(mockedCursor.getString(4)).thenReturn(newEnytrGuid);
+		when(mockedCursor.getString(5)).thenReturn(PersistentBalanceEntryCreated.DESCRIPTION_COLUMN);
+		when(mockedCursor.getString(6)).thenReturn(newEntryDescription);
+		when(mockedCursor.getString(7)).thenReturn(PersistentBalanceEntryCreated.DATE_COLUMN);
+		when(mockedCursor.getString(8)).thenReturn(new SimpleDateFormat("yyyy.MM.dd").format(newEntryDate));
+		when(mockedCursor.getString(9)).thenReturn(PersistentBalanceEntryCreated.AMOUNT_COLUMN);
+		when(mockedCursor.getString(10)).thenReturn(new Long(newEntryAmount.cents()).toString());
 	}
 
 }

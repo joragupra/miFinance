@@ -37,19 +37,14 @@ class BalanceEventSavingHandler {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_AGGREGATE_ID, persistentEvent.event().balanceGuid());
         values.put(COLUMN_NAME_EVENT_TYPE, persistentEvent.eventType());
-        values.put(COLUMN_NAME_KEY_01, "entryGuid");
+        values.put(COLUMN_NAME_KEY_01, PersistentBalanceEntryCreated.ENTRY_GUID_COLUMN);
         values.put(COLUMN_NAME_DATA_01, persistentEvent.event().entryGuid());
-
-        values.put(COLUMN_NAME_KEY_02, "description");
+        values.put(COLUMN_NAME_KEY_02, PersistentBalanceEntryCreated.DESCRIPTION_COLUMN);
         values.put(COLUMN_NAME_DATA_02, persistentEvent.event().entryDescription());
-
-        values.put(COLUMN_NAME_KEY_03, "date");
+        values.put(COLUMN_NAME_KEY_03, PersistentBalanceEntryCreated.DATE_COLUMN);
         values.put(COLUMN_NAME_DATA_03, new SimpleDateFormat("yyyy.MM.dd").format(persistentEvent.event().creationDate()));
-
-        values.put(COLUMN_NAME_KEY_04, "date");
+        values.put(COLUMN_NAME_KEY_04, PersistentBalanceEntryCreated.AMOUNT_COLUMN);
         values.put(COLUMN_NAME_DATA_04, persistentEvent.event().amount().cents());
-
-
         writableDb.insert(TABLE_NAME, null, values);
     }
 
