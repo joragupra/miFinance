@@ -4,10 +4,10 @@ import com.tinyexpenses.balance.BalanceEvent;
 
 interface PersistentBalanceEvent<T extends BalanceEvent> {
 
-    void toBeSaved(BalanceEventSavingHandler savingHandler);
+	void toBeSaved(BalanceEventSavingHandler savingHandler);
 
-    String eventType();
+	String eventType();
 
-    T event();
+	T event();
 
 }

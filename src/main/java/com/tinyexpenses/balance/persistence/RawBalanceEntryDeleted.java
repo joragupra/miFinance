@@ -8,13 +8,13 @@ import java.lang.Override;
 
 class RawBalanceEntryDeleted extends RawBalanceEvent<BalanceEntryDeleted> {
 
-    RawBalanceEntryDeleted(Map<String, String> columnValues) {
-        super(columnValues);
-    }
+	RawBalanceEntryDeleted(Map<String, String> columnValues) {
+		super(columnValues);
+	}
 
-    @Override
-    public BalanceEntryDeleted loadedBy(BalanceEventLoadingHandler handler) {
-        return handler.load(this);
-    }
+	@Override
+	public BalanceEntryDeleted loadedBy(BalanceEventLoadingHandler handler) {
+		return handler.load(this);
+	}
 
 }

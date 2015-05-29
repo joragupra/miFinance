@@ -49,7 +49,8 @@ public class BalanceEventStoreTest {
 	}
 
 	private Cursor prepareDatabaseToReturnCursor() {
-		final String query = "select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME;
+		final String query = "select * from "
+				+ BalanceEventStoreContract.DBEventStore.TABLE_NAME;
 		Cursor cursor = mock(Cursor.class);
 		when(cursor.getCount()).thenReturn(1);
 		when(cursor.move(1)).thenReturn(true);
@@ -64,19 +65,19 @@ public class BalanceEventStoreTest {
 
 		eventStore.saveEvent(newBalanceGuid, event);
 
-		verify(savingHandler, times(1)).save(aPersistentBalanceCreatedEventWithGuid(newBalanceGuid));
+		verify(savingHandler, times(1)).save(
+				aPersistentBalanceCreatedEventWithGuid(newBalanceGuid));
 	}
 
-	private PersistentBalanceCreated aPersistentBalanceCreatedEventWithGuid(final String guid) {
-		return argThat(
-			new ArgumentMatcher<PersistentBalanceCreated>() {
-				@Override
-				public boolean matches(Object arg) {
-					PersistentBalanceCreated persistentEvent = (PersistentBalanceCreated) arg;
-					return persistentEvent.event().balanceGuid().equals(guid);
-				}
+	private PersistentBalanceCreated aPersistentBalanceCreatedEventWithGuid(
+			final String guid) {
+		return argThat(new ArgumentMatcher<PersistentBalanceCreated>() {
+			@Override
+			public boolean matches(Object arg) {
+				PersistentBalanceCreated persistentEvent = (PersistentBalanceCreated) arg;
+				return persistentEvent.event().balanceGuid().equals(guid);
 			}
-		);
+		});
 	}
 
 	@Test
@@ -87,19 +88,21 @@ public class BalanceEventStoreTest {
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1)).save(aPersistentBalanceRenamedEventWith(balanceGuid, newBalanceName));
+		verify(savingHandler, times(1))
+				.save(aPersistentBalanceRenamedEventWith(balanceGuid,
+						newBalanceName));
 	}
 
-	private PersistentBalanceRenamed aPersistentBalanceRenamedEventWith(final String guid, final String newName) {
-		return argThat(
-			new ArgumentMatcher<PersistentBalanceRenamed>() {
-				@Override
-				public boolean matches(Object arg) {
-					PersistentBalanceRenamed persistentEvent = (PersistentBalanceRenamed) arg;
-					return persistentEvent.event().balanceGuid().equals(guid) && persistentEvent.event().name().equals(newName);
-				}
+	private PersistentBalanceRenamed aPersistentBalanceRenamedEventWith(
+			final String guid, final String newName) {
+		return argThat(new ArgumentMatcher<PersistentBalanceRenamed>() {
+			@Override
+			public boolean matches(Object arg) {
+				PersistentBalanceRenamed persistentEvent = (PersistentBalanceRenamed) arg;
+				return persistentEvent.event().balanceGuid().equals(guid)
+						&& persistentEvent.event().name().equals(newName);
 			}
-		);
+		});
 	}
 
 	@Test
@@ -109,23 +112,37 @@ public class BalanceEventStoreTest {
 		final String balanceEntryDescription = "Lunch at Maxim's";
 		final Date balanceEntryDate = new Date();
 		final Money balanceEntryAmount = Money.fromCents(12845);
-		BalanceEntryCreated event = new BalanceEntryCreated(balanceGuid, balanceEntryGuid, balanceEntryDescription, balanceEntryDate, balanceEntryAmount);
+		BalanceEntryCreated event = new BalanceEntryCreated(balanceGuid,
+				balanceEntryGuid, balanceEntryDescription, balanceEntryDate,
+				balanceEntryAmount);
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1)).save(aPersistentBalanceEntryCreatedEventWith(balanceGuid, balanceEntryGuid, balanceEntryDescription, balanceEntryDate, balanceEntryAmount));
+		verify(savingHandler, times(1)).save(
+				aPersistentBalanceEntryCreatedEventWith(balanceGuid,
+						balanceEntryGuid, balanceEntryDescription,
+						balanceEntryDate, balanceEntryAmount));
 	}
 
-	private PersistentBalanceEntryCreated aPersistentBalanceEntryCreatedEventWith(final String balanceGuid, final String balanceEntryGuid, final String entryDescription, final Date entryDate, final Money entryAmount) {
-		return argThat(
-			new ArgumentMatcher<PersistentBalanceEntryCreated>() {
-				@Override
-				public boolean matches(Object arg) {
-					PersistentBalanceEntryCreated persistentEvent = (PersistentBalanceEntryCreated) arg;
-					return persistentEvent.event().balanceGuid().equals(balanceGuid) && persistentEvent.event().entryGuid().equals(balanceEntryGuid) && persistentEvent.event().entryDescription().equals(entryDescription) && persistentEvent.event().creationDate().equals(entryDate) && persistentEvent.event().amount().equals(entryAmount);
-				}
+	private PersistentBalanceEntryCreated aPersistentBalanceEntryCreatedEventWith(
+			final String balanceGuid, final String balanceEntryGuid,
+			final String entryDescription, final Date entryDate,
+			final Money entryAmount) {
+		return argThat(new ArgumentMatcher<PersistentBalanceEntryCreated>() {
+			@Override
+			public boolean matches(Object arg) {
+				PersistentBalanceEntryCreated persistentEvent = (PersistentBalanceEntryCreated) arg;
+				return persistentEvent.event().balanceGuid()
+						.equals(balanceGuid)
+						&& persistentEvent.event().entryGuid()
+								.equals(balanceEntryGuid)
+						&& persistentEvent.event().entryDescription()
+								.equals(entryDescription)
+						&& persistentEvent.event().creationDate()
+								.equals(entryDate)
+						&& persistentEvent.event().amount().equals(entryAmount);
 			}
-		);
+		});
 	}
 
 	@Test
@@ -135,46 +152,65 @@ public class BalanceEventStoreTest {
 		final String balanceEntryDescription = "Lunch at Maxim's";
 		final Date balanceEntryDate = new Date();
 		final Money balanceEntryAmount = Money.fromCents(12845);
-		BalanceEntryUpdated event = new BalanceEntryUpdated(balanceGuid, balanceEntryGuid, balanceEntryDescription, balanceEntryDate, balanceEntryAmount);
+		BalanceEntryUpdated event = new BalanceEntryUpdated(balanceGuid,
+				balanceEntryGuid, balanceEntryDescription, balanceEntryDate,
+				balanceEntryAmount);
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1)).save(aPersistentBalanceEntryUpdatedEventWith(balanceGuid, balanceEntryGuid, balanceEntryDescription, balanceEntryDate, balanceEntryAmount));
+		verify(savingHandler, times(1)).save(
+				aPersistentBalanceEntryUpdatedEventWith(balanceGuid,
+						balanceEntryGuid, balanceEntryDescription,
+						balanceEntryDate, balanceEntryAmount));
 	}
 
-	private PersistentBalanceEntryUpdated aPersistentBalanceEntryUpdatedEventWith(final String balanceGuid, final String balanceEntryGuid, final String entryDescription, final Date entryDate, final Money entryAmount) {
-		return argThat(
-			new ArgumentMatcher<PersistentBalanceEntryUpdated>() {
-				@Override
-				public boolean matches(Object arg) {
-					PersistentBalanceEntryUpdated persistentEvent = (PersistentBalanceEntryUpdated) arg;
-					return persistentEvent.event().balanceGuid().equals(balanceGuid) && persistentEvent.event().entryGuid().equals(balanceEntryGuid) && persistentEvent.event().entryDescription().equals(entryDescription) && persistentEvent.event().creationDate().equals(entryDate) && persistentEvent.event().amount().equals(entryAmount);
-				}
+	private PersistentBalanceEntryUpdated aPersistentBalanceEntryUpdatedEventWith(
+			final String balanceGuid, final String balanceEntryGuid,
+			final String entryDescription, final Date entryDate,
+			final Money entryAmount) {
+		return argThat(new ArgumentMatcher<PersistentBalanceEntryUpdated>() {
+			@Override
+			public boolean matches(Object arg) {
+				PersistentBalanceEntryUpdated persistentEvent = (PersistentBalanceEntryUpdated) arg;
+				return persistentEvent.event().balanceGuid()
+						.equals(balanceGuid)
+						&& persistentEvent.event().entryGuid()
+								.equals(balanceEntryGuid)
+						&& persistentEvent.event().entryDescription()
+								.equals(entryDescription)
+						&& persistentEvent.event().creationDate()
+								.equals(entryDate)
+						&& persistentEvent.event().amount().equals(entryAmount);
 			}
-		);
+		});
 	}
 
 	@Test
 	public void testSaveBalanceEntryDeletedEvent() {
 		final String balanceGuid = "81f9d7f8c7c8a92fg";
 		final String balanceEntryGuid = "7ccf234fg124ed23";
-		BalanceEntryDeleted event = new BalanceEntryDeleted(balanceGuid, balanceEntryGuid);
+		BalanceEntryDeleted event = new BalanceEntryDeleted(balanceGuid,
+				balanceEntryGuid);
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1)).save(aPersistentBalanceEntryDeletedEventWith(balanceGuid, balanceEntryGuid));
+		verify(savingHandler, times(1)).save(
+				aPersistentBalanceEntryDeletedEventWith(balanceGuid,
+						balanceEntryGuid));
 	}
 
-	private PersistentBalanceEntryDeleted aPersistentBalanceEntryDeletedEventWith(final String balanceGuid, final String balanceEntryGuid) {
-		return argThat(
-			new ArgumentMatcher<PersistentBalanceEntryDeleted>() {
-				@Override
-				public boolean matches(Object arg) {
-					PersistentBalanceEntryDeleted persistentEvent = (PersistentBalanceEntryDeleted) arg;
-					return persistentEvent.event().balanceGuid().equals(balanceGuid) && persistentEvent.event().entryGuid().equals(balanceEntryGuid);
-				}
+	private PersistentBalanceEntryDeleted aPersistentBalanceEntryDeletedEventWith(
+			final String balanceGuid, final String balanceEntryGuid) {
+		return argThat(new ArgumentMatcher<PersistentBalanceEntryDeleted>() {
+			@Override
+			public boolean matches(Object arg) {
+				PersistentBalanceEntryDeleted persistentEvent = (PersistentBalanceEntryDeleted) arg;
+				return persistentEvent.event().balanceGuid()
+						.equals(balanceGuid)
+						&& persistentEvent.event().entryGuid()
+								.equals(balanceEntryGuid);
 			}
-		);
+		});
 	}
 
 	@Test
@@ -207,32 +243,42 @@ public class BalanceEventStoreTest {
 		final String balanceEntryDescription = "Dinner at Maxim's";
 		final Date balanceEntryDate = new Date();
 		final Money balanceEntryAmount = Money.fromCents(12845);
-		prepareBalanceEntryCreatedRowReturned(singleResultCursor, balanceEntryGuid, balanceEntryDescription, balanceEntryDate, balanceEntryAmount);
+		prepareBalanceEntryCreatedRowReturned(singleResultCursor,
+				balanceEntryGuid, balanceEntryDescription, balanceEntryDate,
+				balanceEntryAmount);
 
 		List<BalanceEvent> events = eventStore.loadEvents(TEST_BALANCE_ID);
 
 		assertEquals(1, events.size());
 		assertEquals(BalanceEntryCreated.class, events.get(0).getClass());
 		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
-		assertEquals(balanceEntryGuid, ((BalanceEntryCreated) events.get(0)).entryGuid());
-		assertEquals(balanceEntryDescription, ((BalanceEntryCreated) events.get(0)).entryDescription());
-		assertEquals(balanceEntryDate.getYear(), ((BalanceEntryCreated) events.get(0)).creationDate().getYear());
-		assertEquals(balanceEntryDate.getMonth(), ((BalanceEntryCreated) events.get(0)).creationDate().getMonth());
-		assertEquals(balanceEntryDate.getDay(), ((BalanceEntryCreated) events.get(0)).creationDate().getDay());
-		assertEquals(balanceEntryAmount.cents(), ((BalanceEntryCreated) events.get(0)).amount().cents());
+		assertEquals(balanceEntryGuid,
+				((BalanceEntryCreated) events.get(0)).entryGuid());
+		assertEquals(balanceEntryDescription,
+				((BalanceEntryCreated) events.get(0)).entryDescription());
+		assertEquals(balanceEntryDate.getYear(),
+				((BalanceEntryCreated) events.get(0)).creationDate().getYear());
+		assertEquals(balanceEntryDate.getMonth(),
+				((BalanceEntryCreated) events.get(0)).creationDate().getMonth());
+		assertEquals(balanceEntryDate.getDay(),
+				((BalanceEntryCreated) events.get(0)).creationDate().getDay());
+		assertEquals(balanceEntryAmount.cents(),
+				((BalanceEntryCreated) events.get(0)).amount().cents());
 	}
 
 	@Test
 	public void testLoadBalanceEntryDeletedEvent() {
 		final String balanceEntryGuid = "5cdf114fg14efd23";
-		prepareBalanceEntryDeletedRowReturned(singleResultCursor, balanceEntryGuid);
+		prepareBalanceEntryDeletedRowReturned(singleResultCursor,
+				balanceEntryGuid);
 
 		List<BalanceEvent> events = eventStore.loadEvents(TEST_BALANCE_ID);
 
 		assertEquals(1, events.size());
 		assertEquals(BalanceEntryDeleted.class, events.get(0).getClass());
 		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
-		assertEquals(balanceEntryGuid, ((BalanceEntryDeleted) events.get(0)).entryGuid());
+		assertEquals(balanceEntryGuid,
+				((BalanceEntryDeleted) events.get(0)).entryGuid());
 	}
 
 	@Test
@@ -241,14 +287,17 @@ public class BalanceEventStoreTest {
 		final String balanceEntryDescription = "Dinner at Maxim's modified";
 		final Date balanceEntryDate = new Date();
 		final Money balanceEntryAmount = Money.fromCents(12845);
-		prepareBalanceEntryUpdatedRowReturned(singleResultCursor, balanceEntryGuid, balanceEntryDescription, balanceEntryDate, balanceEntryAmount);
+		prepareBalanceEntryUpdatedRowReturned(singleResultCursor,
+				balanceEntryGuid, balanceEntryDescription, balanceEntryDate,
+				balanceEntryAmount);
 
 		List<BalanceEvent> events = eventStore.loadEvents(TEST_BALANCE_ID);
 
 		assertEquals(1, events.size());
 		assertEquals(BalanceEntryUpdated.class, events.get(0).getClass());
 		assertEquals(TEST_BALANCE_ID, events.get(0).balanceGuid());
-		assertEquals(balanceEntryGuid, ((BalanceEntryUpdated) events.get(0)).entryGuid());
+		assertEquals(balanceEntryGuid,
+				((BalanceEntryUpdated) events.get(0)).entryGuid());
 	}
 
 	private void prepareBalanceCreatedRowReturned(Cursor mockedCursor) {
@@ -256,44 +305,68 @@ public class BalanceEventStoreTest {
 		when(mockedCursor.getString(2)).thenReturn("BALANCE_CREATED");
 	}
 
-	private void prepareBalanceRenamedRowReturned(Cursor mockedCursor, String newBalanceName) {
+	private void prepareBalanceRenamedRowReturned(Cursor mockedCursor,
+			String newBalanceName) {
 		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
-		when(mockedCursor.getString(2)).thenReturn(PersistentBalanceRenamed.EVENT_TYPE);
-		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceRenamed.NAME_COLUMN);
+		when(mockedCursor.getString(2)).thenReturn(
+				PersistentBalanceRenamed.EVENT_TYPE);
+		when(mockedCursor.getString(3)).thenReturn(
+				PersistentBalanceRenamed.NAME_COLUMN);
 		when(mockedCursor.getString(4)).thenReturn(newBalanceName);
 	}
 
-	private void prepareBalanceEntryCreatedRowReturned(Cursor mockedCursor, String newEntryGuid, String newEntryDescription, Date newEntryDate, Money newEntryAmount) {
+	private void prepareBalanceEntryCreatedRowReturned(Cursor mockedCursor,
+			String newEntryGuid, String newEntryDescription, Date newEntryDate,
+			Money newEntryAmount) {
 		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
-		when(mockedCursor.getString(2)).thenReturn(PersistentBalanceEntryCreated.EVENT_TYPE);
-		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceEntryCreated.ENTRY_GUID_COLUMN);
+		when(mockedCursor.getString(2)).thenReturn(
+				PersistentBalanceEntryCreated.EVENT_TYPE);
+		when(mockedCursor.getString(3)).thenReturn(
+				PersistentBalanceEntryCreated.ENTRY_GUID_COLUMN);
 		when(mockedCursor.getString(4)).thenReturn(newEntryGuid);
-		when(mockedCursor.getString(5)).thenReturn(PersistentBalanceEntryCreated.DESCRIPTION_COLUMN);
+		when(mockedCursor.getString(5)).thenReturn(
+				PersistentBalanceEntryCreated.DESCRIPTION_COLUMN);
 		when(mockedCursor.getString(6)).thenReturn(newEntryDescription);
-		when(mockedCursor.getString(7)).thenReturn(PersistentBalanceEntryCreated.DATE_COLUMN);
-		when(mockedCursor.getString(8)).thenReturn(new SimpleDateFormat("yyyy.MM.dd").format(newEntryDate));
-		when(mockedCursor.getString(9)).thenReturn(PersistentBalanceEntryCreated.AMOUNT_COLUMN);
-		when(mockedCursor.getString(10)).thenReturn(new Long(newEntryAmount.cents()).toString());
+		when(mockedCursor.getString(7)).thenReturn(
+				PersistentBalanceEntryCreated.DATE_COLUMN);
+		when(mockedCursor.getString(8)).thenReturn(
+				new SimpleDateFormat("yyyy.MM.dd").format(newEntryDate));
+		when(mockedCursor.getString(9)).thenReturn(
+				PersistentBalanceEntryCreated.AMOUNT_COLUMN);
+		when(mockedCursor.getString(10)).thenReturn(
+				new Long(newEntryAmount.cents()).toString());
 	}
 
-	private void prepareBalanceEntryDeletedRowReturned(Cursor mockedCursor, String entryGuid) {
+	private void prepareBalanceEntryDeletedRowReturned(Cursor mockedCursor,
+			String entryGuid) {
 		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
-		when(mockedCursor.getString(2)).thenReturn(PersistentBalanceEntryDeleted.EVENT_TYPE);
-		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceEntryDeleted.ENTRY_GUID_COLUMN);
+		when(mockedCursor.getString(2)).thenReturn(
+				PersistentBalanceEntryDeleted.EVENT_TYPE);
+		when(mockedCursor.getString(3)).thenReturn(
+				PersistentBalanceEntryDeleted.ENTRY_GUID_COLUMN);
 		when(mockedCursor.getString(4)).thenReturn(entryGuid);
 	}
 
-	private void prepareBalanceEntryUpdatedRowReturned(Cursor mockedCursor, String entryGuid, String entryDescription, Date entryDate, Money entryAmount) {
+	private void prepareBalanceEntryUpdatedRowReturned(Cursor mockedCursor,
+			String entryGuid, String entryDescription, Date entryDate,
+			Money entryAmount) {
 		when(mockedCursor.getString(1)).thenReturn(TEST_BALANCE_ID);
-		when(mockedCursor.getString(2)).thenReturn(PersistentBalanceEntryUpdated.EVENT_TYPE);
-		when(mockedCursor.getString(3)).thenReturn(PersistentBalanceEntryUpdated.ENTRY_GUID_COLUMN);
+		when(mockedCursor.getString(2)).thenReturn(
+				PersistentBalanceEntryUpdated.EVENT_TYPE);
+		when(mockedCursor.getString(3)).thenReturn(
+				PersistentBalanceEntryUpdated.ENTRY_GUID_COLUMN);
 		when(mockedCursor.getString(4)).thenReturn(entryGuid);
-		when(mockedCursor.getString(5)).thenReturn(PersistentBalanceEntryUpdated.DESCRIPTION_COLUMN);
+		when(mockedCursor.getString(5)).thenReturn(
+				PersistentBalanceEntryUpdated.DESCRIPTION_COLUMN);
 		when(mockedCursor.getString(6)).thenReturn(entryDescription);
-		when(mockedCursor.getString(7)).thenReturn(PersistentBalanceEntryUpdated.DATE_COLUMN);
-		when(mockedCursor.getString(8)).thenReturn(new SimpleDateFormat("yyyy.MM.dd").format(entryDate));
-		when(mockedCursor.getString(9)).thenReturn(PersistentBalanceEntryUpdated.AMOUNT_COLUMN);
-		when(mockedCursor.getString(10)).thenReturn(new Long(entryAmount.cents()).toString());
+		when(mockedCursor.getString(7)).thenReturn(
+				PersistentBalanceEntryUpdated.DATE_COLUMN);
+		when(mockedCursor.getString(8)).thenReturn(
+				new SimpleDateFormat("yyyy.MM.dd").format(entryDate));
+		when(mockedCursor.getString(9)).thenReturn(
+				PersistentBalanceEntryUpdated.AMOUNT_COLUMN);
+		when(mockedCursor.getString(10)).thenReturn(
+				new Long(entryAmount.cents()).toString());
 	}
 
 }

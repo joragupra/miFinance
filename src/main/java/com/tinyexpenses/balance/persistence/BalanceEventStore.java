@@ -20,7 +20,8 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 	private BalanceEventLoadingHandler loadingHandler;
 	private BalanceEventSavingHandler savingHandler;
 
-	public BalanceEventStore(SQLiteDatabase writableDb, SQLiteDatabase readableDb) {
+	public BalanceEventStore(SQLiteDatabase writableDb,
+			SQLiteDatabase readableDb) {
 		this.writableDb = writableDb;
 		this.readableDb = readableDb;
 
@@ -34,7 +35,8 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 
 	public List<BalanceEvent> loadEvents(String aggregateId) {
 		List<BalanceEvent> events = new ArrayList<>();
-		Cursor c = readableDb.rawQuery("select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME, null);
+		Cursor c = readableDb.rawQuery("select * from "
+				+ BalanceEventStoreContract.DBEventStore.TABLE_NAME, null);
 		for (int i = 0; i < c.getCount(); i++) {
 			boolean moved = c.move(1);
 			if (moved) {
@@ -43,8 +45,10 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 
 				int offset = 3;
 				Map<String, String> keyValue = new HashMap();
-				keyValue.put(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID, aggregateGuid);
-				//TODO - make this beautiful
+				keyValue.put(
+						BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID,
+						aggregateGuid);
+				// TODO - make this beautiful
 				for (int j = 0; j < 7; j += 2) {
 					String key = c.getString(offset + j);
 					String val = c.getString(offset + j + 1);
@@ -57,8 +61,9 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 		return events;
 	}
 
-	//TODO - move this factory method to an external class
-	private RawBalanceEvent create(String eventType, Map<String, String> keyValue) {
+	// TODO - move this factory method to an external class
+	private RawBalanceEvent create(String eventType,
+			Map<String, String> keyValue) {
 		if (eventType.equals(PersistentBalanceCreated.EVENT_TYPE)) {
 			return new RawBalanceCreated(keyValue);
 		}
@@ -78,7 +83,8 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 	}
 
 	public void saveEvent(String aggregateId, BalanceEvent event) {
-		PersistentBalanceEvent persistentEvent = PersistentBalanceEventFactory.from(event);
+		PersistentBalanceEvent persistentEvent = PersistentBalanceEventFactory
+				.from(event);
 		persistentEvent.toBeSaved(savingHandler);
 	}
 

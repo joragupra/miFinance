@@ -9,19 +9,22 @@ import com.tinyexpenses.balance.BalanceEvent;
 
 class PersistentBalanceEventFactory {
 
-    static PersistentBalanceEvent from(BalanceEvent balanceEvent) {
-        if (BalanceCreated.class == balanceEvent.getClass()) {
-            return new PersistentBalanceCreated((BalanceCreated) balanceEvent);
-        } else if (BalanceRenamed.class == balanceEvent.getClass()) {
-            return new PersistentBalanceRenamed((BalanceRenamed) balanceEvent);
-        } else if (BalanceEntryCreated.class == balanceEvent.getClass()) {
-            return new PersistentBalanceEntryCreated((BalanceEntryCreated) balanceEvent);
-        } else if (BalanceEntryDeleted.class == balanceEvent.getClass()) {
-            return new PersistentBalanceEntryDeleted((BalanceEntryDeleted) balanceEvent);
-        } else if (BalanceEntryUpdated.class == balanceEvent.getClass()) {
-            return new PersistentBalanceEntryUpdated((BalanceEntryUpdated) balanceEvent);
-        }
-        return null;
-    }
+	static PersistentBalanceEvent from(BalanceEvent balanceEvent) {
+		if (BalanceCreated.class == balanceEvent.getClass()) {
+			return new PersistentBalanceCreated((BalanceCreated) balanceEvent);
+		} else if (BalanceRenamed.class == balanceEvent.getClass()) {
+			return new PersistentBalanceRenamed((BalanceRenamed) balanceEvent);
+		} else if (BalanceEntryCreated.class == balanceEvent.getClass()) {
+			return new PersistentBalanceEntryCreated(
+					(BalanceEntryCreated) balanceEvent);
+		} else if (BalanceEntryDeleted.class == balanceEvent.getClass()) {
+			return new PersistentBalanceEntryDeleted(
+					(BalanceEntryDeleted) balanceEvent);
+		} else if (BalanceEntryUpdated.class == balanceEvent.getClass()) {
+			return new PersistentBalanceEntryUpdated(
+					(BalanceEntryUpdated) balanceEvent);
+		}
+		return null;
+	}
 
 }

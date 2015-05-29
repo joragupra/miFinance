@@ -8,13 +8,13 @@ import java.lang.Override;
 
 class RawBalanceEntryUpdated extends RawBalanceEvent<BalanceEntryUpdated> {
 
-    RawBalanceEntryUpdated(Map<String, String> columnValues) {
-        super(columnValues);
-    }
+	RawBalanceEntryUpdated(Map<String, String> columnValues) {
+		super(columnValues);
+	}
 
-    @Override
-    public BalanceEntryUpdated loadedBy(BalanceEventLoadingHandler handler) {
-        return handler.load(this);
-    }
+	@Override
+	public BalanceEntryUpdated loadedBy(BalanceEventLoadingHandler handler) {
+		return handler.load(this);
+	}
 
 }

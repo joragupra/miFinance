@@ -7,16 +7,16 @@ import java.util.Map;
 
 abstract class RawBalanceEvent<T extends BalanceEvent> {
 
-    protected Map<String, String> columnValues = new HashMap<>();
+	protected Map<String, String> columnValues = new HashMap<>();
 
-    RawBalanceEvent(Map<String, String> columnValues) {
-        this.columnValues = columnValues;
-    }
+	RawBalanceEvent(Map<String, String> columnValues) {
+		this.columnValues = columnValues;
+	}
 
-    String valueInColumn(String column) {
-        return columnValues.get(column);
-    }
+	String valueInColumn(String column) {
+		return columnValues.get(column);
+	}
 
-    abstract T loadedBy(BalanceEventLoadingHandler handler);
+	abstract T loadedBy(BalanceEventLoadingHandler handler);
 
 }

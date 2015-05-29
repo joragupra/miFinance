@@ -7,13 +7,13 @@ import java.util.Map;
 
 class RawBalanceRenamed extends RawBalanceEvent<BalanceRenamed> {
 
-    RawBalanceRenamed(Map<String, String> columnValues) {
-        super(columnValues);
-    }
+	RawBalanceRenamed(Map<String, String> columnValues) {
+		super(columnValues);
+	}
 
-    @Override
-    public BalanceRenamed loadedBy(BalanceEventLoadingHandler handler) {
-        return handler.load(this);
-    }
+	@Override
+	public BalanceRenamed loadedBy(BalanceEventLoadingHandler handler) {
+		return handler.load(this);
+	}
 
 }
