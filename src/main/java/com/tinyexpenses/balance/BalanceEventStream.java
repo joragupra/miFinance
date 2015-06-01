@@ -12,6 +12,10 @@ class BalanceEventStream {
 		this.eventStore = eventStore;
 	}
 
+	List<BalanceEvent> events() {
+		return events(EventStore.ALL_EVENTS);
+	}
+
 	List<BalanceEvent> events(String balanceGuid) {
 		return eventStore.loadEvents(balanceGuid);
 	}

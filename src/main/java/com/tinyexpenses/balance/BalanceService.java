@@ -2,7 +2,9 @@ package com.tinyexpenses.balance;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BalanceService {
 
@@ -16,14 +18,20 @@ public class BalanceService {
 		commandHandler = new BalanceCommandHandler(factory, eventStream);
 	}
 
-	public Balance retrieveBalance() {
-		List<BalanceEvent> events = eventStream.events(null);
-		if (!events.isEmpty()) {
-			String guid = events.get(0).balanceGuid();
-			return retrieveBalance(guid);
+	public List<String> retrieveAllBalances() {
+		Set<String> balanceGuids = new HashSet<>();
+		List<BalanceEvent> events = eventStream.events();
+		for(BalanceEvent event : events) {
+			balanceGuids.add(event.balanceGuid());
 		}
+		return new ArrayList<>(balanceGuids);
+	}
 
-		return factory.createEmptyBalance();
+	public Balance retrieveBalance() {
+		List<String> balancesGuids = retrieveAllBalances();
+		//TODO - find a better way to provide a default name
+		String balanceGuid = balancesGuids.isEmpty() ? openNewBalance("General ledger") : balancesGuids.get(0);
+		return retrieveBalance(balanceGuid);
 	}
 
 	public Balance retrieveBalance(String balanceGuid) {
