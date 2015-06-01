@@ -20,8 +20,7 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 	private BalanceEventLoadingHandler loadingHandler;
 	private BalanceEventSavingHandler savingHandler;
 
-	public BalanceEventStore(SQLiteDatabase writableDb,
-			SQLiteDatabase readableDb) {
+	public BalanceEventStore(SQLiteDatabase writableDb, SQLiteDatabase readableDb) {
 		this.writableDb = writableDb;
 		this.readableDb = readableDb;
 
