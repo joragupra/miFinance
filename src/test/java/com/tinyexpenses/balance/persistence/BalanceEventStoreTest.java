@@ -49,8 +49,7 @@ public class BalanceEventStoreTest {
 	}
 
 	private Cursor prepareDatabaseToReturnCursor() {
-		final String query = "select * from "
-				+ BalanceEventStoreContract.DBEventStore.TABLE_NAME;
+		final String query = "select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME + " where " + BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID + " = '" + TEST_BALANCE_ID + "'";
 		Cursor cursor = mock(Cursor.class);
 		when(cursor.getCount()).thenReturn(1);
 		when(cursor.move(1)).thenReturn(true);

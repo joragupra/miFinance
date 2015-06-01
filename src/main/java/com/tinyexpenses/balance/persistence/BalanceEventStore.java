@@ -34,8 +34,11 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 
 	public List<BalanceEvent> loadEvents(String aggregateId) {
 		List<BalanceEvent> events = new ArrayList<>();
-		Cursor c = readableDb.rawQuery("select * from "
-				+ BalanceEventStoreContract.DBEventStore.TABLE_NAME, null);
+		Cursor c = readableDb.rawQuery(
+				aggregateId == EventStore.ALL_EVENTS ?
+				"select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME :
+				"select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME + " where "  + BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID + " = '" + aggregateId + "'",
+				null);
 		for (int i = 0; i < c.getCount(); i++) {
 			boolean moved = c.move(1);
 			if (moved) {
