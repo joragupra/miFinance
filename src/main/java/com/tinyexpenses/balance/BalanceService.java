@@ -17,6 +17,12 @@ public class BalanceService {
 	}
 
 	public Balance retrieveBalance() {
+		List<BalanceEvent> events = eventStream.events(null);
+		if (!events.isEmpty()) {
+			String guid = events.get(0).balanceGuid();
+			return retrieveBalance(guid);
+		}
+
 		return factory.createEmptyBalance();
 	}
 
