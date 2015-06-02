@@ -36,11 +36,6 @@ public class Balance {
 		this(EntrySortMethod.RECORD_DATE);
 	}
 
-	public Balance(String name) {
-		this();
-		this.name = name;
-	}
-
 	Balance(EntrySortMethod sortMethod) {
 		this.entries = new ArrayList<>();
 		this.sortMethod = sortMethod;
