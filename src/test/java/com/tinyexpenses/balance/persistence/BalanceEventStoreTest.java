@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.text.SimpleDateFormat;
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 
@@ -33,19 +34,15 @@ public class BalanceEventStoreTest {
 
 	private BalanceEventStore eventStore;
 
-	private BalanceEventSavingHandler savingHandler;
-
 	private static final String TEST_BALANCE_ID = "565fd67e99c007d";
 	private SQLiteDatabase mockDatabase;
 	private Cursor singleResultCursor;
 
 	@Before
 	public void setUp() {
-		this.savingHandler = mock(BalanceEventSavingHandler.class);
 		this.mockDatabase = PowerMockito.mock(SQLiteDatabase.class);
 		this.singleResultCursor = prepareDatabaseToReturnCursor();
-		this.eventStore = new BalanceEventStore(null, mockDatabase);
-		this.eventStore.setSavingHandler(savingHandler);
+		this.eventStore = new BalanceEventStore(mockDatabase, mockDatabase);
 	}
 
 	private Cursor prepareDatabaseToReturnCursor() {
@@ -64,19 +61,13 @@ public class BalanceEventStoreTest {
 
 		eventStore.saveEvent(newBalanceGuid, event);
 
-		verify(savingHandler, times(1)).save(
-				aPersistentBalanceCreatedEventWithGuid(newBalanceGuid));
-	}
-
-	private PersistentBalanceCreated aPersistentBalanceCreatedEventWithGuid(
-			final String guid) {
-		return argThat(new ArgumentMatcher<PersistentBalanceCreated>() {
-			@Override
-			public boolean matches(Object arg) {
-				PersistentBalanceCreated persistentEvent = (PersistentBalanceCreated) arg;
-				return persistentEvent.event().balanceGuid().equals(guid);
-			}
-		});
+		verify(mockDatabase, times(1)).insert(
+			eq(BalanceEventStoreContract.DBEventStore.TABLE_NAME),
+			isNull(String.class),
+			contentWithValues(new KeyValuePair[] {
+				new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID, newBalanceGuid),
+				new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_EVENT_TYPE, PersistentBalanceCreated.EVENT_TYPE)
+				}));
 	}
 
 	@Test
@@ -87,21 +78,15 @@ public class BalanceEventStoreTest {
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1))
-				.save(aPersistentBalanceRenamedEventWith(balanceGuid,
-						newBalanceName));
-	}
-
-	private PersistentBalanceRenamed aPersistentBalanceRenamedEventWith(
-			final String guid, final String newName) {
-		return argThat(new ArgumentMatcher<PersistentBalanceRenamed>() {
-			@Override
-			public boolean matches(Object arg) {
-				PersistentBalanceRenamed persistentEvent = (PersistentBalanceRenamed) arg;
-				return persistentEvent.event().balanceGuid().equals(guid)
-						&& persistentEvent.event().name().equals(newName);
-			}
-		});
+        verify(mockDatabase, times(1)).insert(
+                eq(BalanceEventStoreContract.DBEventStore.TABLE_NAME),
+                isNull(String.class),
+                contentWithValues(new KeyValuePair[] {
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID, balanceGuid),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_EVENT_TYPE, PersistentBalanceRenamed.EVENT_TYPE),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_01, PersistentBalanceRenamed.NAME_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_01, newBalanceName)
+                                  }));
 	}
 
 	@Test
@@ -117,31 +102,21 @@ public class BalanceEventStoreTest {
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1)).save(
-				aPersistentBalanceEntryCreatedEventWith(balanceGuid,
-						balanceEntryGuid, balanceEntryDescription,
-						balanceEntryDate, balanceEntryAmount));
-	}
-
-	private PersistentBalanceEntryCreated aPersistentBalanceEntryCreatedEventWith(
-			final String balanceGuid, final String balanceEntryGuid,
-			final String entryDescription, final Date entryDate,
-			final Money entryAmount) {
-		return argThat(new ArgumentMatcher<PersistentBalanceEntryCreated>() {
-			@Override
-			public boolean matches(Object arg) {
-				PersistentBalanceEntryCreated persistentEvent = (PersistentBalanceEntryCreated) arg;
-				return persistentEvent.event().balanceGuid()
-						.equals(balanceGuid)
-						&& persistentEvent.event().entryGuid()
-								.equals(balanceEntryGuid)
-						&& persistentEvent.event().entryDescription()
-								.equals(entryDescription)
-						&& persistentEvent.event().creationDate()
-								.equals(entryDate)
-						&& persistentEvent.event().amount().equals(entryAmount);
-			}
-		});
+        verify(mockDatabase, times(1)).insert(
+                eq(BalanceEventStoreContract.DBEventStore.TABLE_NAME),
+                isNull(String.class),
+                contentWithValues(new KeyValuePair[] {
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID, balanceGuid),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_EVENT_TYPE, PersistentBalanceEntryCreated.EVENT_TYPE),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_01, PersistentBalanceEntryCreated.ENTRY_GUID_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_01, balanceEntryGuid),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_02, PersistentBalanceEntryCreated.DESCRIPTION_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_02, balanceEntryDescription),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_03, PersistentBalanceEntryCreated.DATE_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_03, new SimpleDateFormat("yyyy.MM.dd").format(balanceEntryDate)),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_04, PersistentBalanceEntryCreated.AMOUNT_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_04, "" + balanceEntryAmount.cents())
+                                  }));
 	}
 
 	@Test
@@ -157,31 +132,21 @@ public class BalanceEventStoreTest {
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1)).save(
-				aPersistentBalanceEntryUpdatedEventWith(balanceGuid,
-						balanceEntryGuid, balanceEntryDescription,
-						balanceEntryDate, balanceEntryAmount));
-	}
-
-	private PersistentBalanceEntryUpdated aPersistentBalanceEntryUpdatedEventWith(
-			final String balanceGuid, final String balanceEntryGuid,
-			final String entryDescription, final Date entryDate,
-			final Money entryAmount) {
-		return argThat(new ArgumentMatcher<PersistentBalanceEntryUpdated>() {
-			@Override
-			public boolean matches(Object arg) {
-				PersistentBalanceEntryUpdated persistentEvent = (PersistentBalanceEntryUpdated) arg;
-				return persistentEvent.event().balanceGuid()
-						.equals(balanceGuid)
-						&& persistentEvent.event().entryGuid()
-								.equals(balanceEntryGuid)
-						&& persistentEvent.event().entryDescription()
-								.equals(entryDescription)
-						&& persistentEvent.event().creationDate()
-								.equals(entryDate)
-						&& persistentEvent.event().amount().equals(entryAmount);
-			}
-		});
+        verify(mockDatabase, times(1)).insert(
+                eq(BalanceEventStoreContract.DBEventStore.TABLE_NAME),
+                isNull(String.class),
+                contentWithValues(new KeyValuePair[] {
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID, balanceGuid),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_EVENT_TYPE, PersistentBalanceEntryUpdated.EVENT_TYPE),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_01, PersistentBalanceEntryUpdated.ENTRY_GUID_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_01, balanceEntryGuid),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_02, PersistentBalanceEntryUpdated.DESCRIPTION_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_02, balanceEntryDescription),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_03, PersistentBalanceEntryUpdated.DATE_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_03, new SimpleDateFormat("yyyy.MM.dd").format(balanceEntryDate)),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_04, PersistentBalanceEntryUpdated.AMOUNT_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_04, "" + balanceEntryAmount.cents())
+                                  }));
 	}
 
 	@Test
@@ -193,24 +158,51 @@ public class BalanceEventStoreTest {
 
 		eventStore.saveEvent(balanceGuid, event);
 
-		verify(savingHandler, times(1)).save(
-				aPersistentBalanceEntryDeletedEventWith(balanceGuid,
-						balanceEntryGuid));
+        verify(mockDatabase, times(1)).insert(
+                eq(BalanceEventStoreContract.DBEventStore.TABLE_NAME),
+                isNull(String.class),
+                contentWithValues(new KeyValuePair[] {
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID, balanceGuid),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_EVENT_TYPE, PersistentBalanceEntryDeleted.EVENT_TYPE),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_KEY_01, PersistentBalanceEntryDeleted.ENTRY_GUID_COLUMN),
+                                          new KeyValuePair(BalanceEventStoreContract.DBEventStore.COLUMN_NAME_DATA_01, balanceEntryGuid)
+                                  }));
 	}
 
-	private PersistentBalanceEntryDeleted aPersistentBalanceEntryDeletedEventWith(
-			final String balanceGuid, final String balanceEntryGuid) {
-		return argThat(new ArgumentMatcher<PersistentBalanceEntryDeleted>() {
-			@Override
-			public boolean matches(Object arg) {
-				PersistentBalanceEntryDeleted persistentEvent = (PersistentBalanceEntryDeleted) arg;
-				return persistentEvent.event().balanceGuid()
-						.equals(balanceGuid)
-						&& persistentEvent.event().entryGuid()
-								.equals(balanceEntryGuid);
-			}
-		});
-	}
+    private class KeyValuePair {
+
+        private String key;
+        private String value;
+
+        private KeyValuePair(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        private String key() {
+            return this.key;
+        }
+
+        private String value() {
+            return this.value;
+        }
+
+    }
+
+    private ContentValues contentWithValues(final KeyValuePair[] keyValues) {
+        return argThat(new ArgumentMatcher<ContentValues>() {
+                           @Override
+                           public boolean matches(Object arg) {
+                               ContentValues contentValues = (ContentValues) arg;
+                               for (KeyValuePair keyValue : keyValues) {
+                                   if (!keyValue.value().equals(contentValues.get(keyValue.key()).toString())) {
+                                       return false;
+                                   }
+                               }
+                               return true;
+                           }
+                       });
+    }
 
 	@Test
 	public void testLoadBalanceCreatedEvent() {

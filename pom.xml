@@ -20,9 +20,9 @@
           <version>1.0.0-SNAPSHOT</version>
       </dependency>
       <dependency>
-          <groupId>com.google.android</groupId>
-          <artifactId>android</artifactId>
-          <version>4.1.1.4</version>
+          <groupId>org.robolectric</groupId>
+          <artifactId>android-all</artifactId>
+          <version>4.1.2_r1-robolectric-0</version>
       </dependency>
 
       <dependency>
@@ -69,6 +69,9 @@
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-surefire-plugin</artifactId>
                   <version>2.12.4</version>
+                  <configuration>
+                      <argLine>-XX:-UseSplitVerifier</argLine>
+                  </configuration>
               </plugin>
               <plugin>
                   <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
@@ -111,6 +114,12 @@
                       <packageLineRate>80</packageLineRate>
                       <packageBranchRate>80</packageBranchRate>
                   </check>
+                  <instrumentation>
+                      <excludes>
+                          <exclude>com/**/BalanceEventStoreContract*.class</exclude>
+                          <exclude>com/**/EventStoreDatabaseHelper*.class</exclude>
+                      </excludes>
+                  </instrumentation>
               </configuration>
           </plugin>
       </plugins>

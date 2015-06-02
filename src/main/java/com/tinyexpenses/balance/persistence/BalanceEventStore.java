@@ -28,10 +28,6 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 		savingHandler = new BalanceEventSavingHandler(writableDb);
 	}
 
-	void setSavingHandler(BalanceEventSavingHandler savingHandler) {
-		this.savingHandler = savingHandler;
-	}
-
 	public List<BalanceEvent> loadEvents(String aggregateId) {
 		List<BalanceEvent> events = new ArrayList<>();
 		Cursor c = readableDb.rawQuery(
