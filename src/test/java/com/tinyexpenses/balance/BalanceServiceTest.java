@@ -17,6 +17,25 @@ public class BalanceServiceTest {
 	}
 
 	@Test
+	public void testRetrieveBalance_WhenNoBalanceExists() {
+		Balance balance = service.retrieveBalance();
+
+		assertNotNull(balance);
+	}
+
+	@Test
+	public void testRetrieveBalance_WhenOneBalanceAlreadyExists() {
+		final String balanceName = "Test balance";
+		final String balanceGuid = service.openNewBalance(balanceName);
+
+		Balance balance = service.retrieveBalance();
+
+		assertNotNull(balance);
+		assertEquals(balanceGuid, balance.guid());
+		assertEquals(balanceName, balance.name());
+	}
+
+	@Test
 	public void testOpenNewBalance() {
 		final String balanceName = "General ledger";
 
