@@ -21,7 +21,7 @@ public class BalanceService {
 	public List<String> retrieveAllBalances() {
 		Set<String> balanceGuids = new HashSet<>();
 		List<BalanceEvent> events = eventStream.events();
-		for(BalanceEvent event : events) {
+		for (BalanceEvent event : events) {
 			balanceGuids.add(event.balanceGuid());
 		}
 		return new ArrayList<>(balanceGuids);
@@ -29,8 +29,10 @@ public class BalanceService {
 
 	public Balance retrieveBalance() {
 		List<String> balancesGuids = retrieveAllBalances();
-		//TODO - find a better way to provide a default name
-		String balanceGuid = balancesGuids.isEmpty() ? openNewBalance("General ledger") : balancesGuids.get(0);
+		// TODO - find a better way to provide a default name
+		String balanceGuid = balancesGuids.isEmpty()
+				? openNewBalance("General ledger")
+				: balancesGuids.get(0);
 		return retrieveBalance(balanceGuid);
 	}
 

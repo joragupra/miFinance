@@ -29,7 +29,8 @@ public class BalanceTest {
 		assertEquals(entryGuid, balance.entries().get(0).guid());
 		assertEquals(entryDescription, balance.entries().get(0).description());
 		assertEquals(entryDate, balance.entries().get(0).recordedAt());
-		assertEquals(entryAmount.cents(), balance.entries().get(0).amount().cents());
+		assertEquals(entryAmount.cents(), balance.entries().get(0).amount()
+				.cents());
 	}
 
 	@Test
@@ -46,25 +47,28 @@ public class BalanceTest {
 		assertEquals(entryGuid, balance.entries().get(0).guid());
 		assertEquals(entryDescription, balance.entries().get(0).description());
 		assertEquals(entryDate, balance.entries().get(0).recordedAt());
-		assertEquals(entryAmount.cents(), balance.entries().get(0).amount().cents());
+		assertEquals(entryAmount.cents(), balance.entries().get(0).amount()
+				.cents());
 	}
 
-    @Test
-    public void testUpdateEntry_WhenEntryNotFound_DoesNothing() {
-        final String entryGuid = "727217ad271b34cc";
-        final String entryDescription = "Book purchase";
-        final Date entryDate = new Date();
-        final Money entryAmount = Money.fromCents(2499);
-        balance.addEntry(entryGuid, entryDescription, entryDate, entryAmount);
+	@Test
+	public void testUpdateEntry_WhenEntryNotFound_DoesNothing() {
+		final String entryGuid = "727217ad271b34cc";
+		final String entryDescription = "Book purchase";
+		final Date entryDate = new Date();
+		final Money entryAmount = Money.fromCents(2499);
+		balance.addEntry(entryGuid, entryDescription, entryDate, entryAmount);
 
-        balance.updateEntry("f52767c4d5de766", "Dinner", new Date(), Money.fromCents(1499));
+		balance.updateEntry("f52767c4d5de766", "Dinner", new Date(),
+				Money.fromCents(1499));
 
-        assertEquals(1, balance.entries().size());
-        assertEquals(entryGuid, balance.entries().get(0).guid());
-        assertEquals(entryDescription, balance.entries().get(0).description());
-        assertEquals(entryDate, balance.entries().get(0).recordedAt());
-        assertEquals(entryAmount.cents(), balance.entries().get(0).amount().cents());
-    }
+		assertEquals(1, balance.entries().size());
+		assertEquals(entryGuid, balance.entries().get(0).guid());
+		assertEquals(entryDescription, balance.entries().get(0).description());
+		assertEquals(entryDate, balance.entries().get(0).recordedAt());
+		assertEquals(entryAmount.cents(), balance.entries().get(0).amount()
+				.cents());
+	}
 
 	@Test
 	public void testDeleteEntry() {
@@ -76,86 +80,99 @@ public class BalanceTest {
 		assertEquals(0, balance.entries().size());
 	}
 
-    @Test
-    public void testDeleteEntry_WhenEntryNotFound_DoesNothing() {
-        balance.addEntry("727217ad271b34cc", "Dinner", new Date(), Money.fromCents(1499));
+	@Test
+	public void testDeleteEntry_WhenEntryNotFound_DoesNothing() {
+		balance.addEntry("727217ad271b34cc", "Dinner", new Date(),
+				Money.fromCents(1499));
 
-        balance.deleteEntry("ab672c726d2f152");
+		balance.deleteEntry("ab672c726d2f152");
 
-        assertEquals(1, balance.entries().size());
-    }
+		assertEquals(1, balance.entries().size());
+	}
 
-    @Test
-    public void testDeleteAllEntries() {
-        balance.addEntry("727217ad271b34cc", "Dinner", new Date(), Money.fromCents(1499));
-        balance.addEntry("33fed237ad271b378f", "Book purchase", new Date(), Money.fromCents(2499));
+	@Test
+	public void testDeleteAllEntries() {
+		balance.addEntry("727217ad271b34cc", "Dinner", new Date(),
+				Money.fromCents(1499));
+		balance.addEntry("33fed237ad271b378f", "Book purchase", new Date(),
+				Money.fromCents(2499));
 
-        balance.deleteAllEntries();
+		balance.deleteAllEntries();
 
-        assertEquals(0, balance.entries().size());
-    }
+		assertEquals(0, balance.entries().size());
+	}
 
-    @Test
-    public void testBalanceAmount() {
-        balance.addEntry("727217ad271b34cc", "Dinner", new Date(), Money.fromCents(1499));
-        balance.addEntry("33fed237ad271b378f", "Book purchase", new Date(), Money.fromCents(2499));
+	@Test
+	public void testBalanceAmount() {
+		balance.addEntry("727217ad271b34cc", "Dinner", new Date(),
+				Money.fromCents(1499));
+		balance.addEntry("33fed237ad271b378f", "Book purchase", new Date(),
+				Money.fromCents(2499));
 
-        assertEquals(3998, balance.balanceAmount().cents());
-    }
+		assertEquals(3998, balance.balanceAmount().cents());
+	}
 
-    @Test
-    public void testChangeSortingMethod_ByAmount() {
-        final String entryGuid1 = "727217ad271b34ccd2";
-        final String entryDescription1 = "Book purchase";
-        final Date entryDate1 = new Date();
-        final Money entryAmount1 = Money.fromCents(499);
+	@Test
+	public void testChangeSortingMethod_ByAmount() {
+		final String entryGuid1 = "727217ad271b34ccd2";
+		final String entryDescription1 = "Book purchase";
+		final Date entryDate1 = new Date();
+		final Money entryAmount1 = Money.fromCents(499);
 
-        final String entryGuid2 = "787ef917ad271b34cc";
-        final String entryDescription2 = "Another book purchase";
-        final Date entryDate2 = new Date();
-        final Money entryAmount2 = Money.fromCents(2499);
+		final String entryGuid2 = "787ef917ad271b34cc";
+		final String entryDescription2 = "Another book purchase";
+		final Date entryDate2 = new Date();
+		final Money entryAmount2 = Money.fromCents(2499);
 
-        balance.addEntry(entryGuid1, entryDescription1, entryDate1, entryAmount1);
-        balance.addEntry(entryGuid2, entryDescription2, entryDate2, entryAmount2);
+		balance.addEntry(entryGuid1, entryDescription1, entryDate1,
+				entryAmount1);
+		balance.addEntry(entryGuid2, entryDescription2, entryDate2,
+				entryAmount2);
 
-        balance.changeSortingMethod(Balance.EntrySortMethod.AMOUNT);
+		balance.changeSortingMethod(Balance.EntrySortMethod.AMOUNT);
 
-        assertEquals(entryGuid1, balance.entries().get(0).guid());
-        assertEquals(entryDescription1, balance.entries().get(0).description());
-        assertEquals(entryDate1, balance.entries().get(0).recordedAt());
-        assertEquals(entryAmount1.cents(), balance.entries().get(0).amount().cents());
-        assertEquals(entryGuid2, balance.entries().get(1).guid());
-        assertEquals(entryDescription2, balance.entries().get(1).description());
-        assertEquals(entryDate2, balance.entries().get(1).recordedAt());
-        assertEquals(entryAmount2.cents(), balance.entries().get(1).amount().cents());
-    }
+		assertEquals(entryGuid1, balance.entries().get(0).guid());
+		assertEquals(entryDescription1, balance.entries().get(0).description());
+		assertEquals(entryDate1, balance.entries().get(0).recordedAt());
+		assertEquals(entryAmount1.cents(), balance.entries().get(0).amount()
+				.cents());
+		assertEquals(entryGuid2, balance.entries().get(1).guid());
+		assertEquals(entryDescription2, balance.entries().get(1).description());
+		assertEquals(entryDate2, balance.entries().get(1).recordedAt());
+		assertEquals(entryAmount2.cents(), balance.entries().get(1).amount()
+				.cents());
+	}
 
-    @Test
-    public void testChangeSortingMethod_ByDescription() {
-        final String entryGuid1 = "727217ad271b34ccd2";
-        final String entryDescription1 = "Book purchase";
-        final Date entryDate1 = new Date();
-        final Money entryAmount1 = Money.fromCents(499);
+	@Test
+	public void testChangeSortingMethod_ByDescription() {
+		final String entryGuid1 = "727217ad271b34ccd2";
+		final String entryDescription1 = "Book purchase";
+		final Date entryDate1 = new Date();
+		final Money entryAmount1 = Money.fromCents(499);
 
-        final String entryGuid2 = "787ef917ad271b34cc";
-        final String entryDescription2 = "Another purchase";
-        final Date entryDate2 = new Date();
-        final Money entryAmount2 = Money.fromCents(2499);
+		final String entryGuid2 = "787ef917ad271b34cc";
+		final String entryDescription2 = "Another purchase";
+		final Date entryDate2 = new Date();
+		final Money entryAmount2 = Money.fromCents(2499);
 
-        balance.addEntry(entryGuid1, entryDescription1, entryDate1, entryAmount1);
-        balance.addEntry(entryGuid2, entryDescription2, entryDate2, entryAmount2);
+		balance.addEntry(entryGuid1, entryDescription1, entryDate1,
+				entryAmount1);
+		balance.addEntry(entryGuid2, entryDescription2, entryDate2,
+				entryAmount2);
 
-        balance.changeSortingMethod(Balance.EntrySortMethod.DESCRIPTION);
+		balance.changeSortingMethod(Balance.EntrySortMethod.DESCRIPTION);
 
-        assertEquals(entryGuid2, balance.entries().get(0).guid());
-        assertEquals(entryDescription2, balance.entries().get(0).description());
-        assertEquals(entryDate2, balance.entries().get(0).recordedAt());
-        assertEquals(entryAmount2.cents(), balance.entries().get(0).amount().cents());
-        assertEquals(entryGuid1, balance.entries().get(1).guid());
-        assertEquals(entryDescription1, balance.entries().get(1).description());
-        assertEquals(entryDate1, balance.entries().get(1).recordedAt());
-        assertEquals(entryAmount1.cents(), balance.entries().get(1).amount().cents());
-    }
+		assertEquals(entryGuid2, balance.entries().get(0).guid());
+		assertEquals(entryDescription2, balance.entries().get(0).description());
+		assertEquals(entryDate2, balance.entries().get(0).recordedAt());
+		assertEquals(entryAmount2.cents(), balance.entries().get(0).amount()
+				.cents());
+		assertEquals(entryGuid1, balance.entries().get(1).guid());
+		assertEquals(entryDescription1, balance.entries().get(1).description());
+		assertEquals(entryDate1, balance.entries().get(1).recordedAt());
+		assertEquals(entryAmount1.cents(), balance.entries().get(1).amount()
+				.cents());
+	}
 
 	@Test
 	public void testCreateBalanceCommand() {
