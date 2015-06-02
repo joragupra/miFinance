@@ -113,7 +113,7 @@ public class Balance {
 	private int findEntryPositionForGuid(String entryGuid) {
 		int pos = -1;
 		for (int i = 0; i < this.entries.size(); i++) {
-			if (this.entries.get(i).guid() == entryGuid) {
+			if (this.entries.get(i).guid().equals(entryGuid)) {
 				pos = i;
 				break;
 			}
