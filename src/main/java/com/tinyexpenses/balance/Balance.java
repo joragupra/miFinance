@@ -41,12 +41,6 @@ public class Balance {
 		this.sortMethod = sortMethod;
 	}
 
-	void initBalanceEntries(List<BalanceEntry> balanceEntries) {
-		for (BalanceEntry balanceEntry : balanceEntries) {
-			entries.add(balanceEntry);
-		}
-	}
-
 	public void assignGuid(String guid) {
 		this.guid = guid;
 	}

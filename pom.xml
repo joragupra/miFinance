@@ -81,6 +81,11 @@
                     <packageLineRate>80</packageLineRate>
                     <packageBranchRate>80</packageBranchRate>
                 </check>
+                <instrumentation>
+                    <excludes>
+                        <exclude>com/**/IdGenerator*.class</exclude>
+                    </excludes>
+                </instrumentation>
             </configuration>
         </plugin>
     </plugins>

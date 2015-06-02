@@ -54,4 +54,27 @@ public class Money implements Comparable<Money> {
 				another.amountCents));
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Money money = (Money) o;
+
+        if (amountCents != money.amountCents) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (amountCents ^ (amountCents >>> 32));
+    }
+
 }
