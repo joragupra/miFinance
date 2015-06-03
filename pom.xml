@@ -4,7 +4,7 @@
   <groupId>com.tinyexpenses</groupId>
   <artifactId>balance</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>balance</name>
   <url>http://tinyexpenses.joragupra.com</url>
 
