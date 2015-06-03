@@ -20,7 +20,8 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 	private BalanceEventLoadingHandler loadingHandler;
 	private BalanceEventSavingHandler savingHandler;
 
-	public BalanceEventStore(SQLiteDatabase writableDb, SQLiteDatabase readableDb) {
+	public BalanceEventStore(SQLiteDatabase writableDb,
+			SQLiteDatabase readableDb) {
 		this.writableDb = writableDb;
 		this.readableDb = readableDb;
 
@@ -30,11 +31,16 @@ public class BalanceEventStore implements EventStore<BalanceEvent> {
 
 	public List<BalanceEvent> loadEvents(String aggregateId) {
 		List<BalanceEvent> events = new ArrayList<>();
-		Cursor c = readableDb.rawQuery(
-				aggregateId == EventStore.ALL_EVENTS ?
-				"select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME :
-				"select * from " + BalanceEventStoreContract.DBEventStore.TABLE_NAME + " where "  + BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID + " = '" + aggregateId + "'",
-				null);
+		Cursor c = readableDb
+				.rawQuery(
+						aggregateId == EventStore.ALL_EVENTS
+								? "select * from "
+										+ BalanceEventStoreContract.DBEventStore.TABLE_NAME
+								: "select * from "
+										+ BalanceEventStoreContract.DBEventStore.TABLE_NAME
+										+ " where "
+										+ BalanceEventStoreContract.DBEventStore.COLUMN_NAME_AGGREGATE_ID
+										+ " = '" + aggregateId + "'", null);
 		for (int i = 0; i < c.getCount(); i++) {
 			boolean moved = c.move(1);
 			if (moved) {
