@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.tinyexpenses.balance.persistence</groupId>
   <artifactId>balance-persistence</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>balance-persistence</name>
@@ -17,7 +17,7 @@
       <dependency>
           <groupId>com.tinyexpenses</groupId>
           <artifactId>balance</artifactId>
-          <version>1.0.0-SNAPSHOT</version>
+          <version>1.0.0</version>
       </dependency>
       <dependency>
           <groupId>org.robolectric</groupId>
