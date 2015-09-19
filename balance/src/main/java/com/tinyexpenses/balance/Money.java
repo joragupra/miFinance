@@ -4,7 +4,7 @@ public class Money implements Comparable<Money> {
 
 	private long amountCents;
 
-	Money(long amountCents) {
+	private Money(long amountCents) {
 		this.amountCents = amountCents;
 	}
 
