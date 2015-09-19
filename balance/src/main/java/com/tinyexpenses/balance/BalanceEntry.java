@@ -1,5 +1,7 @@
 package com.tinyexpenses.balance;
 
+import com.tinyexpenses.common.Money;
+
 import java.util.Comparator;
 import java.util.Date;
 

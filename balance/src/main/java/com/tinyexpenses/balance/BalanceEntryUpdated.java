@@ -1,5 +1,7 @@
 package com.tinyexpenses.balance;
 
+import com.tinyexpenses.common.Money;
+
 public class BalanceEntryUpdated extends BalanceEvent {
 
 	private String entryGuid;

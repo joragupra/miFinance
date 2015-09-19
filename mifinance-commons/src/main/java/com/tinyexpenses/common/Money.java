@@ -1,4 +1,4 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.common;
 
 public class Money implements Comparable<Money> {
 

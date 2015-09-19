@@ -16,6 +16,11 @@
   <dependencies>
     <dependency>
       <groupId>com.tinyexpenses</groupId>
+      <artifactId>mifinance-commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tinyexpenses</groupId>
       <artifactId>balance</artifactId>
       <version>${project.version}</version>
     </dependency>

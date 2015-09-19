@@ -5,9 +5,10 @@ import com.tinyexpenses.balance.BalanceEntryCreated;
 import com.tinyexpenses.balance.BalanceEntryDeleted;
 import com.tinyexpenses.balance.BalanceEntryUpdated;
 import com.tinyexpenses.balance.BalanceRenamed;
-import com.tinyexpenses.balance.Money;
 
 import android.database.sqlite.SQLiteDatabase;
+import com.tinyexpenses.common.Money;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 

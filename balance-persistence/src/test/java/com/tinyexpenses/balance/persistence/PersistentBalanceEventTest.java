@@ -1,14 +1,5 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceCreated;
-import com.tinyexpenses.balance.BalanceRenamed;
-import com.tinyexpenses.balance.BalanceEntryCreated;
-import com.tinyexpenses.balance.BalanceEntryDeleted;
-import com.tinyexpenses.balance.BalanceEntryUpdated;
-import com.tinyexpenses.balance.Money;
-
-import java.util.Date;
-
 import org.junit.*;
 
 import static org.junit.Assert.*;

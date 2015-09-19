@@ -6,18 +6,15 @@ import com.tinyexpenses.balance.BalanceRenamed;
 import com.tinyexpenses.balance.BalanceEntryCreated;
 import com.tinyexpenses.balance.BalanceEntryDeleted;
 import com.tinyexpenses.balance.BalanceEntryUpdated;
-import com.tinyexpenses.balance.Money;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.text.SimpleDateFormat;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 
+import com.tinyexpenses.common.Money;
 import org.junit.runner.*;
 import org.junit.*;
 import org.mockito.ArgumentMatcher;

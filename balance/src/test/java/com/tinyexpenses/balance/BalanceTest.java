@@ -1,5 +1,6 @@
 package com.tinyexpenses.balance;
 
+import com.tinyexpenses.common.Money;
 import org.junit.*;
 import java.util.ArrayList;
 import java.util.Date;
