@@ -44,10 +44,6 @@ public class BalanceEntry {
 		return amount;
 	}
 
-	void changeAmount(long amountCents) {
-		this.amount = Money.fromCents(amountCents);
-	}
-
 	void changeAmount(Money amount) {
 		this.amount = amount;
 	}
