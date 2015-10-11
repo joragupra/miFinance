@@ -1,8 +1,7 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceEntryDeleted;
+import com.tinyexpenses.events.BalanceEntryDeleted;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.lang.Override;
 

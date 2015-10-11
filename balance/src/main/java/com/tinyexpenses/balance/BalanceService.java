@@ -1,6 +1,8 @@
 package com.tinyexpenses.balance;
 
 import com.tinyexpenses.common.Money;
+import com.tinyexpenses.events.BalanceEvent;
+import com.tinyexpenses.events.EventStore;
 import com.tinyexpenses.processing.*;
 
 import java.util.ArrayList;

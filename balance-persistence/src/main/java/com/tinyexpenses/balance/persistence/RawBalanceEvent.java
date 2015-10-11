@@ -1,6 +1,6 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceEvent;
+import com.tinyexpenses.events.BalanceEvent;
 
 import java.util.HashMap;
 import java.util.Map;

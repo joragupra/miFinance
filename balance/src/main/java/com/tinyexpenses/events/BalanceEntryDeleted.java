@@ -1,4 +1,6 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.events;
+
+import com.tinyexpenses.balance.Balance;
 
 public class BalanceEntryDeleted extends BalanceEvent {
 
@@ -13,7 +15,7 @@ public class BalanceEntryDeleted extends BalanceEvent {
 		return this.entryGuid;
 	}
 
-	protected void apply(Balance balance) {
+	public void apply(Balance balance) {
 		balance.handle(this);
 	}
 

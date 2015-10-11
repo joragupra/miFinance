@@ -1,11 +1,8 @@
 package com.tinyexpenses.processing;
 
 import com.tinyexpenses.balance.Balance;
-import com.tinyexpenses.balance.BalanceEvent;
+import com.tinyexpenses.events.BalanceEvent;
 import com.tinyexpenses.balance.BalanceFactory;
-import com.tinyexpenses.processing.BalanceCommand;
-import com.tinyexpenses.processing.BalanceCommandHandler;
-import com.tinyexpenses.processing.BalanceEventStream;
 import org.junit.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -89,7 +86,7 @@ public class BalanceCommandHandlerTest {
 			super(balanceGuid);
 		}
 
-		protected void apply(Balance balance) {
+		public void apply(Balance balance) {
 			// nothing to do here
 		}
 

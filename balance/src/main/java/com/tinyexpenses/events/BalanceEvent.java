@@ -1,4 +1,6 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.events;
+
+import com.tinyexpenses.balance.Balance;
 
 public abstract class BalanceEvent {
 
@@ -12,6 +14,6 @@ public abstract class BalanceEvent {
 		return this.balanceGuid;
 	}
 
-	protected abstract void apply(Balance balance);
+	public abstract void apply(Balance balance);
 
 }

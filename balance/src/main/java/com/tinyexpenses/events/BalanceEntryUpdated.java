@@ -1,15 +1,16 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.events;
 
+import com.tinyexpenses.balance.Balance;
 import com.tinyexpenses.common.Money;
 
-public class BalanceEntryCreated extends BalanceEvent {
+public class BalanceEntryUpdated extends BalanceEvent {
 
-	private String entryDescription;
 	private String entryGuid;
+	private String entryDescription;
 	private java.util.Date creationDate;
 	private Money amount;
 
-	public BalanceEntryCreated(String balanceGuid, String entryGuid,
+	public BalanceEntryUpdated(String balanceGuid, String entryGuid,
 			String entryDescription, java.util.Date createdAt, Money amount) {
 		super(balanceGuid);
 		this.entryGuid = entryGuid;
@@ -34,7 +35,7 @@ public class BalanceEntryCreated extends BalanceEvent {
 		return this.amount;
 	}
 
-	protected void apply(Balance balance) {
+	public void apply(Balance balance) {
 		balance.handle(this);
 	}
 

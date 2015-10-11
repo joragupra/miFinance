@@ -1,11 +1,11 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceEvent;
-import com.tinyexpenses.balance.BalanceCreated;
-import com.tinyexpenses.balance.BalanceRenamed;
-import com.tinyexpenses.balance.BalanceEntryCreated;
-import com.tinyexpenses.balance.BalanceEntryDeleted;
-import com.tinyexpenses.balance.BalanceEntryUpdated;
+import com.tinyexpenses.events.BalanceEvent;
+import com.tinyexpenses.events.BalanceCreated;
+import com.tinyexpenses.events.BalanceRenamed;
+import com.tinyexpenses.events.BalanceEntryCreated;
+import com.tinyexpenses.events.BalanceEntryDeleted;
+import com.tinyexpenses.events.BalanceEntryUpdated;
 
 import java.util.Date;
 import java.util.List;

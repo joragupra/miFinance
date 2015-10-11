@@ -1,5 +1,8 @@
 package com.tinyexpenses.balance;
 
+import com.tinyexpenses.events.BalanceEvent;
+import com.tinyexpenses.events.EventStore;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,8 +1,7 @@
 package com.tinyexpenses.processing;
 
 import com.tinyexpenses.balance.Balance;
-import com.tinyexpenses.balance.BalanceEvent;
-import com.tinyexpenses.processing.BalanceCommand;
+import com.tinyexpenses.events.BalanceEvent;
 
 import java.util.List;
 

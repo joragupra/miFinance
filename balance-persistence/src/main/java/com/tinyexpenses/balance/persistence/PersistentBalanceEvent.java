@@ -1,6 +1,6 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceEvent;
+import com.tinyexpenses.events.BalanceEvent;
 
 interface PersistentBalanceEvent<T extends BalanceEvent> {
 

@@ -1,6 +1,6 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceEntryCreated;
+import com.tinyexpenses.events.BalanceEntryCreated;
 
 import java.lang.Override;
 

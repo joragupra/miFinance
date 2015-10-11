@@ -1,4 +1,4 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.events;
 
 import java.util.List;
 

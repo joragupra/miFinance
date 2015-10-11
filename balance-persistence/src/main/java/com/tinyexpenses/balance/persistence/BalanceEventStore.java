@@ -1,8 +1,7 @@
 package com.tinyexpenses.balance.persistence;
 
-import com.tinyexpenses.balance.BalanceEvent;
-import com.tinyexpenses.balance.EventStore;
-import android.content.ContentValues;
+import com.tinyexpenses.events.BalanceEvent;
+import com.tinyexpenses.events.EventStore;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 

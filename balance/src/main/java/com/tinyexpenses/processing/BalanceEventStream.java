@@ -1,9 +1,8 @@
 package com.tinyexpenses.processing;
 
-import com.tinyexpenses.balance.BalanceEvent;
-import com.tinyexpenses.balance.EventStore;
+import com.tinyexpenses.events.BalanceEvent;
+import com.tinyexpenses.events.EventStore;
 
-import java.lang.IllegalStateException;
 import java.util.List;
 
 public class BalanceEventStream {

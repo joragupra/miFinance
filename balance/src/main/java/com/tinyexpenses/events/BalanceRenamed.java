@@ -1,4 +1,6 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.events;
+
+import com.tinyexpenses.balance.Balance;
 
 public class BalanceRenamed extends BalanceEvent {
 
@@ -13,7 +15,7 @@ public class BalanceRenamed extends BalanceEvent {
 		return this.name;
 	}
 
-	protected void apply(Balance balance) {
+	public void apply(Balance balance) {
 		balance.handle(this);
 	}
 
