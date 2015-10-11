@@ -1,8 +1,8 @@
 package com.tinyexpenses.balance;
 
-class BalanceFactory {
+public class BalanceFactory {
 
-	Balance createEmptyBalance() {
+	public Balance createEmptyBalance() {
 
 		return new Balance();
 

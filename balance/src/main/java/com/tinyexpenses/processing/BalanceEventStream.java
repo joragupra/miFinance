@@ -1,22 +1,25 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.processing;
+
+import com.tinyexpenses.balance.BalanceEvent;
+import com.tinyexpenses.balance.EventStore;
 
 import java.lang.IllegalStateException;
 import java.util.List;
 
-class BalanceEventStream {
+public class BalanceEventStream {
 
 	private EventStore<BalanceEvent> eventStore;
 
-	BalanceEventStream(EventStore<BalanceEvent> eventStore) {
+	public BalanceEventStream(EventStore<BalanceEvent> eventStore) {
 		super();
 		this.eventStore = eventStore;
 	}
 
-	List<BalanceEvent> events() {
+	public List<BalanceEvent> events() {
 		return events(EventStore.ALL_EVENTS);
 	}
 
-	List<BalanceEvent> events(String balanceGuid) {
+	public List<BalanceEvent> events(String balanceGuid) {
 		return eventStore.loadEvents(balanceGuid);
 	}
 

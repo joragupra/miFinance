@@ -1,17 +1,20 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.processing;
 
+import com.tinyexpenses.balance.Balance;
+import com.tinyexpenses.balance.BalanceEvent;
 import com.tinyexpenses.common.Money;
+import com.tinyexpenses.processing.BalanceCommand;
 
 import java.util.List;
 
-class UpdateBalanceEntry extends BalanceCommand {
+public class UpdateBalanceEntry extends BalanceCommand {
 
 	private String entryGuid;
 	private String entryDescription;
 	private java.util.Date createdAt;
 	private Money amount;
 
-	UpdateBalanceEntry(String balanceGuid, String entryGuid,
+	public UpdateBalanceEntry(String balanceGuid, String entryGuid,
 			String entryDescription, java.util.Date createdAt, Money amount) {
 		super(balanceGuid);
 		this.entryGuid = entryGuid;
@@ -20,19 +23,19 @@ class UpdateBalanceEntry extends BalanceCommand {
 		this.amount = amount;
 	}
 
-	String entryGuid() {
+	public String entryGuid() {
 		return this.entryGuid;
 	}
 
-	String entryDescription() {
+	public String entryDescription() {
 		return this.entryDescription;
 	}
 
-	java.util.Date createdAt() {
+	public java.util.Date createdAt() {
 		return this.createdAt;
 	}
 
-	Money amount() {
+	public Money amount() {
 		return this.amount;
 	}
 

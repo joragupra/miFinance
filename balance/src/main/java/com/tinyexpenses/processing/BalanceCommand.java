@@ -1,4 +1,7 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.processing;
+
+import com.tinyexpenses.balance.Balance;
+import com.tinyexpenses.balance.BalanceEvent;
 
 import java.util.List;
 
@@ -10,7 +13,7 @@ abstract class BalanceCommand {
 		this.balanceGuid = balanceGuid;
 	}
 
-	String balanceGuid() {
+	public String balanceGuid() {
 		return this.balanceGuid;
 	}
 

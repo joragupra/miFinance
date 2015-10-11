@@ -1,19 +1,21 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.processing;
+
+import com.tinyexpenses.balance.*;
 
 import java.util.List;
 
-class BalanceCommandHandler {
+public class BalanceCommandHandler {
 
 	private BalanceFactory factory;
 	private BalanceEventStream eventStream;
 
-	BalanceCommandHandler(BalanceFactory balanceFactory,
+	public BalanceCommandHandler(BalanceFactory balanceFactory,
 			BalanceEventStream eventStream) {
 		this.factory = balanceFactory;
 		this.eventStream = eventStream;
 	}
 
-	void handle(BalanceCommand command) {
+	public void handle(BalanceCommand command) {
 		final String balanceGuid = command.balanceGuid();
 
 		List<BalanceEvent> previousEvents = eventStream.events(balanceGuid);

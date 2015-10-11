@@ -1,6 +1,7 @@
 package com.tinyexpenses.balance;
 
 import com.tinyexpenses.common.Money;
+import com.tinyexpenses.processing.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -211,7 +212,7 @@ public class Balance {
 		return this;
 	}
 
-	Balance loadFromEvents(List<BalanceEvent> events) {
+	public Balance loadFromEvents(List<BalanceEvent> events) {
 		for (BalanceEvent event : events) {
 			this.handle(event);
 		}

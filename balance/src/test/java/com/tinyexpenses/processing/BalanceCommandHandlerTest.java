@@ -1,10 +1,15 @@
-package com.tinyexpenses.balance;
+package com.tinyexpenses.processing;
 
+import com.tinyexpenses.balance.Balance;
+import com.tinyexpenses.balance.BalanceEvent;
+import com.tinyexpenses.balance.BalanceFactory;
+import com.tinyexpenses.processing.BalanceCommand;
+import com.tinyexpenses.processing.BalanceCommandHandler;
+import com.tinyexpenses.processing.BalanceEventStream;
 import org.junit.*;
 import java.util.List;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class BalanceCommandHandlerTest {
