@@ -2,6 +2,7 @@ package com.tinyexpenses.processing;
 
 import com.tinyexpenses.balance.Balance;
 import com.tinyexpenses.events.BalanceEvent;
+import com.tinyexpenses.events.EventGenerator;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class DeleteAllEntries extends BalanceCommand {
 	}
 
 	List<BalanceEvent> execute(Balance balance) {
-		return balance.handle(this);
+		return EventGenerator.generateEvents(this);
 	}
 
 }

@@ -182,7 +182,7 @@ public class BalanceTest {
 		final String balanceGuid = "48388432423";
 		final String balanceName = "New balance created";
 		CreateBalance command = new CreateBalance(balanceGuid, balanceName);
-		List<BalanceEvent> generatedEvents = balance.handle(command);
+		List<BalanceEvent> generatedEvents = EventGenerator.generateEvents(command);
 
 		checkBalanceEvent(generatedEvents.get(0), BalanceCreated.class);
 		checkBalanceEvent(generatedEvents.get(1), BalanceRenamed.class);
@@ -225,7 +225,7 @@ public class BalanceTest {
 		CreateEntry command = new CreateEntry("6789", description, createdAt,
 				amount);
 
-		List<BalanceEvent> generatedEvents = balance.handle(command);
+		List<BalanceEvent> generatedEvents = EventGenerator.generateEvents(command);
 
 		checkBalanceEvent(generatedEvents.get(0), BalanceEntryCreated.class);
 		assertEquals(description,
@@ -266,7 +266,7 @@ public class BalanceTest {
 		UpdateBalanceEntry command = new UpdateBalanceEntry("9876", entryGuid,
 				description, createdAt, amount);
 
-		List<BalanceEvent> generatedEvents = balance.handle(command);
+		List<BalanceEvent> generatedEvents = EventGenerator.generateEvents(command);
 
 		checkBalanceEvent(generatedEvents.get(0), BalanceEntryUpdated.class);
 		assertEquals(entryGuid,
@@ -315,7 +315,7 @@ public class BalanceTest {
 		final String entryGuid = initializeBalanceWithOneEntry();
 		DeleteEntry command = new DeleteEntry("112233", entryGuid);
 
-		List<BalanceEvent> generatedEvents = balance.handle(command);
+		List<BalanceEvent> generatedEvents = EventGenerator.generateEvents(command);
 
 		checkBalanceEvent(generatedEvents.get(0), BalanceEntryDeleted.class);
 		assertEquals(entryGuid,
@@ -340,12 +340,10 @@ public class BalanceTest {
 		initializeBalanceWithOneEntry();
 		DeleteAllEntries command = new DeleteAllEntries("1234567");
 
-		List<BalanceEvent> generatedEvents = balance.handle(command);
+		List<BalanceEvent> generatedEvents = EventGenerator.generateEvents(command);
 
-		assertEquals(3, generatedEvents.size());
-		checkBalanceEvent(generatedEvents.get(0), BalanceEntryDeleted.class);
-		checkBalanceEvent(generatedEvents.get(1), BalanceEntryDeleted.class);
-		checkBalanceEvent(generatedEvents.get(2), BalanceEntryDeleted.class);
+		assertEquals(1, generatedEvents.size());
+		checkBalanceEvent(generatedEvents.get(0), BalanceEmptied.class);
 	}
 
 	@Test
