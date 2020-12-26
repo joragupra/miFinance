@@ -18,6 +18,7 @@ import com.tinyexpenses.common.Money;
 import org.junit.runner.*;
 import org.junit.*;
 import org.mockito.ArgumentMatcher;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.api.mockito.PowerMockito;
@@ -26,6 +27,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({SQLiteDatabase.class})
 public class BalanceEventStoreTest {
 
